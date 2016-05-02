@@ -25,5 +25,18 @@ namespace OxHack.Inventory.MobileClient.Views
 
 			NavigationPage.SetHasNavigationBar(this, false);
 		}
+
+		protected override void OnSizeAllocated(double width, double height)
+		{
+			base.OnSizeAllocated(width, height);
+
+			this.FudgeScaling();
+		}
+
+		private void FudgeScaling()
+		{
+			var fudgedScale = 0.8 * (this.Width / this.pcControl.Width);
+			this.pcControl.Scale = fudgedScale;
+		}
 	}
 }

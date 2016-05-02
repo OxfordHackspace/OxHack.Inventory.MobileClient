@@ -26,6 +26,11 @@ namespace OxHack.Inventory.MobileClient
 			};
 		}
 
+		public void HackStart()
+		{
+			this.OnStart();
+		}
+
 		protected override async void OnStart()
 		{
 			await this.beginAnimations();

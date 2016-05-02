@@ -11,7 +11,12 @@ namespace OxHack.Inventory.MobileClient.Views
     {
         public MainMenuPage()
         {
-            InitializeComponent();
-        }
-    }
+            this.InitializeComponent();
+		}
+
+		public void OnBrowseByCategory(object sender, EventArgs args)
+		{
+			this.Navigation.PushAsync(new CategoriesPage());
+		}
+	}
 }

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OxHack.Inventory.MobileClient.Views.CategoriesPage"
+						 Title="Browse By Category">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+
+		<Label 
+			Grid.Row="0" Grid.Column="0"
+			VerticalOptions="Center"
+			Text="Categories:"/>
+
+		<Button
+			Grid.Row="0" Grid.Column="1"
+			Text="🔄"/>
+
+		<ListView
+			Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			>
+			
+		</ListView>
+		
+	</Grid>
+</ContentPage>

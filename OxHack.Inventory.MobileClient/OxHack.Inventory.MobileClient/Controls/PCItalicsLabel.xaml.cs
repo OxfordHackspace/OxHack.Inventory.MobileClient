@@ -12,6 +12,8 @@ namespace OxHack.Inventory.MobileClient.Controls
     {
         public PCItalicsLabel()
         {
-        }
+			this.FontFamily = @"\Assets\Fonts\IMFeENit28P.ttf#IM FELL English";
+			this.FontAttributes = FontAttributes.Italic;
+		}
     }
 }

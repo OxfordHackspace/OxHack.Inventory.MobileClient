@@ -117,6 +117,12 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="..\OxHack.Inventory.MobileClient\Fonts\IMFeENit28P.ttf">
+      <Link>Fonts\IMFeENit28P.ttf</Link>
+    </Content>
+    <Content Include="..\OxHack.Inventory.MobileClient\Fonts\IMFeENrm28P.ttf">
+      <Link>Fonts\IMFeENrm28P.ttf</Link>
+    </Content>
     <None Include="packages.config" />
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
