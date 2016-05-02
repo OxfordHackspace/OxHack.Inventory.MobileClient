@@ -1,45 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using OxHack.Inventory.MobileClient.Views;
+using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient
 {
-    public class App : Application
-    {
-        public App()
-        {
-            // The root page of your application
-            MainPage = new ContentPage
-            {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
-        }
+	public class App : Application
+	{
+		private readonly Func<Task> beginAnimations;
+		private readonly Func<Task> navigateToMainMenu;
 
-        protected override void OnStart()
-        {
-            // Handle when your app starts
-        }
+		public App()
+		{
+			var splash = new SplashPage();
+			var navigationSplash = new NavigationPage(splash);
 
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
+			this.MainPage = navigationSplash;
 
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
-        }
-    }
+			this.beginAnimations = () => splash.BeginAnimation();
+			this.navigateToMainMenu = async () =>
+			{
+				var navigation = splash.Navigation.PushAsync(new MainMenuPage(), true);
+				splash.Navigation.RemovePage(splash);
+				await navigation;
+			};
+		}
+
+		protected override async void OnStart()
+		{
+			await this.beginAnimations();
+			await Task.Delay(TimeSpan.FromSeconds(2));
+			await this.navigateToMainMenu();
+		}
+
+		protected override void OnSleep()
+		{
+			// Handle when your app sleeps
+		}
+
+		protected override void OnResume()
+		{
+			// Handle when your app resumes
+		}
+	}
 }

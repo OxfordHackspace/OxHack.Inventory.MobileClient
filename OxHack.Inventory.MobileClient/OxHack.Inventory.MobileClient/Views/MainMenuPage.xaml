@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OxHack.Inventory.MobileClient.Views.MainMenuPage"
+						 Title="OxHack Inventory">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="1*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		
+		<!--<Label 
+			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="Navigation"/>-->
+		
+		<Button 
+			Grid.Row="1" Grid.Column="0"
+			Text="📖 Browse by Category"/>
+		<Button 
+			Grid.Row="1" Grid.Column="1"
+			Text="🔍 Find by Name"/>
+		<Button 
+			Grid.Row="2" Grid.Column="0"
+			Text="📷 Scan Asset Tag"/>
+		<Button 
+			Grid.Row="2" Grid.Column="1"
+			Text="⌨ Key in Asset Tag"/>
+		
+		<!--<Label 
+			Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="Curation"/>-->
+
+		<Button
+			Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="📄 Create new entry"/>
+	</Grid>
+</ContentPage>

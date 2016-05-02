@@ -97,19 +97,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\PerfectlyCromulentRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="..\..\..\..\Users\yargh_000\Source\Repos\OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient\Fonts\IMFeENit28P.ttf">
+      <Link>Assets\IMFeENit28P.ttf</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\Users\yargh_000\Source\Repos\OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient\Fonts\IMFeENrm28P.ttf">
+      <Link>Assets\IMFeENrm28P.ttf</Link>
+    </AndroidAsset>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -118,6 +119,12 @@
     <ProjectReference Include="..\OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient.csproj">
       <Name>OxHack.Inventory.MobileClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.0.0.6482\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.0.0.6482\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

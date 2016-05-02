@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:OxHack.Inventory.MobileClient.Controls"
+	x:Class="OxHack.Inventory.MobileClient.Controls.PerfectlyCromulentControl"
+	Orientation="Vertical"
+	TranslationY="-15"
+	>
+
+	<local:PCLabel
+		x:Name="a"
+		FontSize="18"
+		TextColor="#DDDDDD" 
+		HorizontalOptions="Start" 
+		TranslationX="-10"
+		TranslationY="15"
+		Text="a"/>
+	<StackLayout Orientation="Horizontal" x:Name="perfectlyCromulent">
+		<local:PCItalicsLabel TextColor="#E0E0E0" FontSize="36" Text="Perfectly"/>
+		<local:PCLabel TextColor="#E0E0E0" FontSize="36" Text="Cromulent"/>
+	</StackLayout>
+	<local:PCLabel
+		x:Name="app"
+		FontSize="18" 
+		TextColor="#DDDDDD" 
+		HorizontalOptions="End" 
+		TranslationX="15"
+		TranslationY="-17.5"
+		Text="app."/>
+</StackLayout >
