@@ -1,51 +1,67 @@
-﻿using OxHack.Inventory.MobileClient.Views;
+﻿using OxHack.Inventory.MobileClient.ViewModels;
+using OxHack.Inventory.MobileClient.Views;
+using OxHack.Inventory.WebClient;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient
 {
-	public class App : Application
-	{
-		private readonly Func<Task> beginAnimations;
-		private readonly Func<Task> navigateToMainMenu;
+    public class App : Application
+    {
+        private readonly Func<Task> beginAnimations;
+        private readonly Func<Task> navigateToMainMenu;
+        private readonly Func<Task> initializeViewModels;
 
-		public App()
-		{
-			var splash = new SplashPage();
-			var navigationSplash = new NavigationPage(splash);
+        public App()
+        {
+            var splash = new SplashPage();
+            this.MainPage = new NavigationPage(splash);
 
-			this.MainPage = navigationSplash;
+            var mainMenuViewModel = new MainMenuViewModel(this.MainPage.Navigation, new InventoryClient(AppConfig.CreateFromConfigFile().ApiUri));
+            var mainMenuPage = new MainMenuPage(mainMenuViewModel, this.MainPage.Navigation);
 
-			this.beginAnimations = () => splash.BeginAnimation();
-			this.navigateToMainMenu = async () =>
-			{
-				var navigation = splash.Navigation.PushAsync(new MainMenuPage(), true);
-				splash.Navigation.RemovePage(splash);
-				await navigation;
-			};
-		}
+            this.initializeViewModels = async () => await mainMenuViewModel.InitializeAsync();
+            this.beginAnimations = async () => await splash.BeginAnimation();
+            this.navigateToMainMenu = async () =>
+            {
+                var navigating = this.MainPage.Navigation.PushAsync(mainMenuPage, true);
+                this.MainPage.Navigation.RemovePage(splash);
+                await navigating;
+            };
+        }
 
-		public void HackStart()
-		{
-			this.OnStart();
-		}
+        protected override async void OnStart()
+        {
+            try
+            {
+                var init = this.initializeViewModels();
+                if (!Debugger.IsAttached)
+                {
+                    await this.beginAnimations();
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                }
+                await this.navigateToMainMenu();
+                await init;
+            }
+            catch (Exception e)
+            {
+                await this.MainPage.DisplayAlert(
+                    "Error during startup",
+                    e.Message,
+                    "Okie dokie");
+            }
+        }
 
-		protected override async void OnStart()
-		{
-			await this.beginAnimations();
-			await Task.Delay(TimeSpan.FromSeconds(2));
-			await this.navigateToMainMenu();
-		}
+        protected override void OnSleep()
+        {
+            // Handle when your app sleeps
+        }
 
-		protected override void OnSleep()
-		{
-			// Handle when your app sleeps
-		}
-
-		protected override void OnResume()
-		{
-			// Handle when your app resumes
-		}
-	}
+        protected override void OnResume()
+        {
+            // Handle when your app resumes
+        }
+    }
 }

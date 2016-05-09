@@ -27,12 +27,15 @@
 			/>
 		<Button 
 			Grid.Row="1" Grid.Column="1"
+			IsEnabled="False"
 			Text="🔍 Find by Name"/>
 		<Button 
 			Grid.Row="2" Grid.Column="0"
+			IsEnabled="False"
 			Text="📷 Scan Asset Tag"/>
 		<Button 
 			Grid.Row="2" Grid.Column="1"
+			IsEnabled="False"
 			Text="⌨ Key in Asset Tag"/>
 		
 		<!--<Label 
@@ -41,6 +44,7 @@
 
 		<Button
 			Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+			IsEnabled="False"
 			Text="📄 Create new entry"/>
 	</Grid>
 </ContentPage>

@@ -3,30 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="OxHack.Inventory.MobileClient.Views.CategoriesPage"
 						 Title="Browse By Category">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="Auto"/>
-		</Grid.ColumnDefinitions>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Order="Secondary" Name="Refresh" />
+	</ContentPage.ToolbarItems>
+	<ListView
+		Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+		ItemsSource="{Binding Categories}"
+		SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+		/>
 
-		<Label 
-			Grid.Row="0" Grid.Column="0"
-			VerticalOptions="Center"
-			Text="Categories:"/>
-
-		<Button
-			Grid.Row="0" Grid.Column="1"
-			Text="🔄"/>
-
-		<ListView
-			Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-			>
-			
-		</ListView>
-		
-	</Grid>
 </ContentPage>

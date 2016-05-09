@@ -23,8 +23,6 @@ namespace OxHack.Inventory.MobileClient.Windows
 
 			var app = new MobileClient.App();
 
-			this.Loaded += (s, e) => app.HackStart();
-
 			LoadApplication(app);
         }
     }

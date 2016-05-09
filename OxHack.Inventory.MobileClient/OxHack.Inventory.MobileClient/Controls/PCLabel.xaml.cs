@@ -12,7 +12,7 @@ namespace OxHack.Inventory.MobileClient.Controls
     {
         public PCLabel()
         {
-			this.FontFamily = @"\Assets\Fonts\IMFeENrm28P.ttf#IM FELL English";
-		}
+            this.FontFamily = @"/Assets/Fonts/IMFeENrm28P.ttf#IM FELL English";
+        }
     }
 }
