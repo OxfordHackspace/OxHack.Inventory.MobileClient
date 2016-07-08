@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
+             x:Class="OxHack.Inventory.MobileClient.Views.ItemDetailsPage"
+						 Title="Item Details">
+
+	<StackLayout Orientation="Vertical">
+		<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
+
+		<Label Text="{Binding Name}">
+			<Label.FontSize>
+				<helpers:ForPlatform
+					x:TypeArguments="x:Double"
+					Android="18"
+					WindowsRT="24"
+								/>
+			</Label.FontSize>
+		</Label>
+		<Label Text="{Binding Manufacturer}"/>
+		<Label Text="{Binding Model}"/>
+		<Label Text="{Binding Quantity}"/>
+		<Label Text="{Binding Category}"/>
+		<Label Text="{Binding Spec}"/>
+		<Label Text="{Binding Appearance}"/>
+		<Label Text="{Binding AssignedLocation}"/>
+		<Label Text="{Binding CurrentLocation}"/>
+		<Label Text="{Binding IsLoan}"/>
+		<Label Text="{Binding Origin}"/>
+		<Label Text="{Binding AdditionalInformation}"/>
+	</StackLayout>
+</ContentPage>

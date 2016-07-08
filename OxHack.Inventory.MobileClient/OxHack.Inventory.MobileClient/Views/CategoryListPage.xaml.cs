@@ -9,13 +9,15 @@ using OxHack.Inventory.WebClient.Models;
 
 namespace OxHack.Inventory.MobileClient.Views
 {
-    public partial class CategoriesPage : ContentPage
-    {
-        public CategoriesPage(CategoriesViewModel viewModel)
-        {
-            InitializeComponent();
+	public partial class CategoryListPage : ContentPage
+	{
+		public CategoryListPage(CategoryListViewModel viewModel)
+		{
+			this.InitializeComponent();
 
-            this.BindingContext = viewModel;
-        }
-    }
+			this.BindingContext = viewModel;
+
+			this.categoryList.ItemTapped += (s, e) => viewModel.NavigateToSelectedCategory();
+		}
+	}
 }

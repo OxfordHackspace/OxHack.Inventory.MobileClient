@@ -10,7 +10,7 @@ namespace OxHack.Inventory.MobileClient.Views
 {
     public partial class MainMenuPage : ContentPage
     {
-        private readonly CategoriesPage categoriesPage;
+        private readonly CategoryListPage categroyListPage;
         private readonly INavigation navigation;
 
         public MainMenuPage(MainMenuViewModel viewModel, INavigation navigation)
@@ -20,12 +20,12 @@ namespace OxHack.Inventory.MobileClient.Views
             this.BindingContext = viewModel;
             this.navigation = navigation;
 
-            this.categoriesPage = new CategoriesPage(viewModel.CategoriesViewModel);
+            this.categroyListPage = new CategoryListPage(viewModel.CategoriesViewModel);
         }
 
         public void OnBrowseByCategory(object sender, EventArgs args)
         {
-            this.navigation.PushAsync(this.categoriesPage);
+            this.navigation.PushAsync(this.categroyListPage);
         }
     }
 }

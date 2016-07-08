@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxHack.Inventory.MobileClient.Droid", "OxHack.Inventory.MobileClient\OxHack.Inventory.MobileClient.Droid\OxHack.Inventory.MobileClient.Droid.csproj", "{B4604FF5-32B4-42D8-997F-2403EE6D584B}"
 EndProject
@@ -85,7 +85,6 @@ Global
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.AppStore|x86.Deploy.0 = Release|Any CPU
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|ARM.Build.0 = Debug|Any CPU
 		{B4604FF5-32B4-42D8-997F-2403EE6D584B}.Debug|ARM.Deploy.0 = Debug|Any CPU
@@ -136,6 +135,7 @@ Global
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.AppStore|x64.ActiveCfg = AppStore|iPhone
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.AppStore|x86.ActiveCfg = AppStore|iPhone
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.Debug|ARM.ActiveCfg = Debug|iPhone
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{470BE53D-77D7-4F55-AEFD-F95593C3E778}.Debug|iPhone.Build.0 = Debug|iPhone
@@ -189,7 +189,6 @@ Global
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.AppStore|x86.Deploy.0 = Release|x86
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|ARM.ActiveCfg = Debug|ARM
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|ARM.Build.0 = Debug|ARM
 		{BB6FF348-31EE-4DC6-A1C5-271BC1B79ADB}.Debug|ARM.Deploy.0 = Debug|ARM
