@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OxHack.Inventory.WebClient.Models
+namespace OxHack.Inventory.ApiClient.Models
 {
     public class Item
     {

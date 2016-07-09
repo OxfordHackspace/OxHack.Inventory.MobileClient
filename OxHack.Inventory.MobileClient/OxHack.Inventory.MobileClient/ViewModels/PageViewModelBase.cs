@@ -1,8 +1,4 @@
-﻿using OxHack.Inventory.WebClient.Models;
-using Prism.Mvvm;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using Prism.Mvvm;
 using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient.ViewModels

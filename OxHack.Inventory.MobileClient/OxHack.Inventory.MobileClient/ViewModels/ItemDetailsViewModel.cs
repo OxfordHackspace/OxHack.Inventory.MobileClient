@@ -1,5 +1,4 @@
-﻿using OxHack.Inventory.WebClient.Models;
-using Prism.Mvvm;
+﻿using OxHack.Inventory.ApiClient.Models;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;

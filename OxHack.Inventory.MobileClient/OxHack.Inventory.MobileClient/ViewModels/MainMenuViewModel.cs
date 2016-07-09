@@ -1,8 +1,4 @@
-﻿using OxHack.Inventory.WebClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OxHack.Inventory.ApiClient;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 

@@ -1,6 +1,5 @@
-﻿using OxHack.Inventory.MobileClient.Views;
-using OxHack.Inventory.WebClient.Models;
-using Prism.Mvvm;
+﻿using OxHack.Inventory.ApiClient.Models;
+using OxHack.Inventory.MobileClient.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;

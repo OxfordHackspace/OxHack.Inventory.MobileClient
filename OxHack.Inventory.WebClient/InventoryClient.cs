@@ -7,9 +7,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using OxHack.Inventory.WebClient.Models;
+using OxHack.Inventory.ApiClient.Models;
 
-namespace OxHack.Inventory.WebClient
+namespace OxHack.Inventory.ApiClient
 {
 	[Obsolete("TODO: Extract interface.")]
 	public class InventoryClient

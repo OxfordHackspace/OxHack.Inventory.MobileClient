@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using OxHack.Inventory.WebClient;
-using System.Collections.ObjectModel;
-using Prism.Mvvm;
-using Xamarin.Forms;
+﻿using OxHack.Inventory.ApiClient;
 using OxHack.Inventory.MobileClient.Views;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
@@ -13,7 +10,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 	{
 		private InventoryClient inventoryClient;
 
-		public CategoryListViewModel(INavigation navigation, InventoryClient inventoryClient) 
+		public CategoryListViewModel(INavigation navigation, InventoryClient inventoryClient)
 			: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;

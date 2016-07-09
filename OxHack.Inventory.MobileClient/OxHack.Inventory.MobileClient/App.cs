@@ -1,6 +1,6 @@
-﻿using OxHack.Inventory.MobileClient.ViewModels;
+﻿using OxHack.Inventory.ApiClient;
+using OxHack.Inventory.MobileClient.ViewModels;
 using OxHack.Inventory.MobileClient.Views;
-using OxHack.Inventory.WebClient;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient
 {
-    public class App : Application
+	public class App : Application
     {
         private readonly Func<Task> beginAnimations;
         private readonly Func<Task> navigateToMainMenu;
