@@ -5,7 +5,7 @@
              x:Class="OxHack.Inventory.MobileClient.Views.ItemListPage"
 						 Title="{Binding Title}">
 
-	<ListView 
+	<ListView
 		x:Name="itemList"
 		ItemsSource="{Binding Items}"
 		SelectedItem="{Binding SelectedItem}"
@@ -18,8 +18,7 @@
 							<helpers:ForPlatform
 								x:TypeArguments="x:Double"
 								Android="80"
-								WindowsRT="160"
-								/>
+								WindowsRT="160"/>
 						</Grid.HeightRequest>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition>
@@ -27,8 +26,7 @@
 									<helpers:ForPlatform
 										x:TypeArguments="GridLength"
 										Android="120"
-										WindowsRT="240"
-								/>
+										WindowsRT="240"/>
 								</ColumnDefinition.Width>
 							</ColumnDefinition>
 							<ColumnDefinition Width="*"/>
@@ -38,25 +36,27 @@
 							VerticalOptions="StartAndExpand"
 							Source="{Binding Photos[0]}"
 							/>
-						<StackLayout 
+						<StackLayout
 							Grid.Column="1"
 							Orientation="Vertical">
 							<Label
+								Margin="-3"
 								Text="{Binding Name}">
 								<Label.FontSize>
 									<helpers:ForPlatform
 										x:TypeArguments="x:Double"
 										Android="18"
-										WindowsRT="24"
-								/>
+										WindowsRT="24"/>
 								</Label.FontSize>
 							</Label>
-						<Label 
-							Grid.Row="1" Grid.Column="1" 
-							Text="{Binding Manufacturer}" />
-						<Label 
-							Grid.Row="2" Grid.Column="1" 
-							Text="{Binding Appearance}" />
+							<Label
+								Margin="-3"
+								Grid.Row="1" Grid.Column="1"
+								Text="{Binding Manufacturer}" />
+							<Label
+								Margin="-3"
+								Grid.Row="2" Grid.Column="1"
+								Text="{Binding Appearance}" />
 						</StackLayout>
 					</Grid>
 				</ViewCell>

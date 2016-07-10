@@ -2,31 +2,87 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
+						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
              x:Class="OxHack.Inventory.MobileClient.Views.ItemDetailsPage"
-						 Title="Item Details">
+						 Title="{Binding Title}"
+						 >
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style TargetType="Label">
+				<Setter Property="FontSize" Value="Small"/>
+				<Setter Property="TextColor" Value="Accent"/>
+			</Style>
+			<Style x:Key="data" TargetType="Label">
+				<Setter Property="FontSize" Value="Medium"/>
+				<Setter Property="TextColor" Value="Default"/>
+				<Setter Property="Margin" Value="6, 3, 6, 6"/>
+				<Setter Property="IsVisible" Value="{Binding IsNotEditing}"/>
+			</Style>
+			<Style TargetType="Entry">
+				<Setter Property="IsVisible" Value="{Binding IsEditing}"/>
+				<Setter Property="Margin" Value="0, -6, 0, -6"/>
+			</Style>
+		<Style TargetType="Editor">
+				<Setter Property="IsVisible" Value="{Binding IsEditing}"/>
+				<Setter Property="Margin" Value="0, -6, 0, -6"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Order="Primary" Text="{Binding ToolBarItemCommandText}" Command="{Binding ToolBarItemCommand}" />
+	</ContentPage.ToolbarItems>
 
-	<StackLayout Orientation="Vertical">
-		<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
+	<ScrollView>
+		<StackLayout Orientation="Vertical">
+			<Label Text="Name"/>
+			<Label Style="{StaticResource data}" Text="{Binding Name}" />
+			<Entry Text="{Binding Name}" />
 
-		<Label Text="{Binding Name}">
-			<Label.FontSize>
-				<helpers:ForPlatform
-					x:TypeArguments="x:Double"
-					Android="18"
-					WindowsRT="24"
-								/>
-			</Label.FontSize>
-		</Label>
-		<Label Text="{Binding Manufacturer}"/>
-		<Label Text="{Binding Model}"/>
-		<Label Text="{Binding Quantity}"/>
-		<Label Text="{Binding Category}"/>
-		<Label Text="{Binding Spec}"/>
-		<Label Text="{Binding Appearance}"/>
-		<Label Text="{Binding AssignedLocation}"/>
-		<Label Text="{Binding CurrentLocation}"/>
-		<Label Text="{Binding IsLoan}"/>
-		<Label Text="{Binding Origin}"/>
-		<Label Text="{Binding AdditionalInformation}"/>
-	</StackLayout>
+			<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
+
+			<Label Text="Manufacturer"/>
+			<Label Style="{StaticResource data}" Text="{Binding Manufacturer}" />
+			<Entry Text="{Binding Manufacturer}" />
+
+			<Label Text="Model"/>
+			<Label Style="{StaticResource data}" Text="{Binding Model}"/>
+			<Entry Text="{Binding Model}"/>
+
+			<Label Text="Quantity"/>
+			<Label Style="{StaticResource data}" Text="{Binding Quantity}"/>
+			<Entry Text="{Binding Quantity}"/>
+
+			<Label Text="Appearance"/>
+			<Label Style="{StaticResource data}" Text="{Binding Appearance}"/>
+			<Entry Text="{Binding Appearance}"/>
+
+			<Label Text="Category"/>
+			<Label Style="{StaticResource data}" Text="{Binding Category}"/>
+			<Entry Text="{Binding Category}"/>
+
+			<Label Text="Spec"/>
+			<Label Style="{StaticResource data}" Text="{Binding Spec}"/>
+			<Entry Text="{Binding Spec}"/>
+
+			<Label Text="Assigned Location"/>
+			<Label Style="{StaticResource data}" Text="{Binding AssignedLocation}"/>
+			<Entry Text="{Binding AssignedLocation}"/>
+
+			<Label Text="Current Location"/>
+			<Label Style="{StaticResource data}" Text="{Binding CurrentLocation}"/>
+			<Entry Text="{Binding CurrentLocation}"/>
+
+			<Label Text="Is Loan?"/>
+			<Label Style="{StaticResource data}" Text="{Binding IsLoan}"/>
+			<Entry Text="{Binding IsLoan}"/>
+
+			<Label Text="Origin"/>
+			<Label Style="{StaticResource data}" Text="{Binding Origin}"/>
+			<Entry Text="{Binding Origin}"/>
+
+			<Label Text="Additional Information"/>
+			<Label Style="{StaticResource data}" Text="{Binding AdditionalInformation}"/>
+			<Editor Text="{Binding AdditionalInformation}"/>
+		</StackLayout>
+	</ScrollView>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using OxHack.Inventory.ApiClient.Models;
+﻿using OxHack.Inventory.ApiClient;
+using OxHack.Inventory.ApiClient.Models;
 using OxHack.Inventory.MobileClient.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,12 +10,15 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 {
 	public class ItemListViewModel : PageViewModelBase
 	{
-		public ItemListViewModel(INavigation navigation, string title, Task<IEnumerable<Item>> itemsGetter)
+		private readonly InventoryClient inventoryClient;
+
+		public ItemListViewModel(INavigation navigation, InventoryClient inventoryClient, string title, Task<IEnumerable<Item>> itemsGetterTask)
 			: base(navigation)
 		{
+			this.inventoryClient = inventoryClient;
 			this.Title = title;
 
-			itemsGetter.ContinueWith(items =>
+			itemsGetterTask.ContinueWith(items =>
 			{
 				if (items.Exception == null)
 				{
@@ -26,17 +30,18 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.Items = new ObservableCollection<Item>();
 		}
 
-		public void NavigateToSelectedItem()
+		public async Task NavigateToSelectedItem()
 		{
-			var target = this.SelectedItem;
+			var target = await this.inventoryClient.GetItemByIdAsync(this.SelectedItem.Id);
 			if (target != null)
 			{
 				var viewModel =
 					new ItemDetailsViewModel(
 						this.Navigation,
+						this.inventoryClient,
 						target);
 
-				this.Navigation.PushAsync(new ItemDetailsPage(viewModel));
+				await this.Navigation.PushAsync(new ItemDetailsPage(viewModel));
 			}
 		}
 

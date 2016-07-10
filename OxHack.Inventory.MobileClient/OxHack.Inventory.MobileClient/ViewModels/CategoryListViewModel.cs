@@ -1,5 +1,6 @@
 ﻿using OxHack.Inventory.ApiClient;
 using OxHack.Inventory.MobileClient.Views;
+using Prism.Commands;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -16,9 +17,16 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.inventoryClient = inventoryClient;
 
 			this.Categories = new ObservableCollection<string>();
+
+			this.RefreshCommand = new DelegateCommand(async () => await this.RefreshList());
 		}
 
 		internal async Task InitializeAsync()
+		{
+			await this.RefreshList();
+		}
+
+		private async Task RefreshList()
 		{
 			var categories = await this.inventoryClient.GetAllCategoriesAsync();
 			this.Categories = new ObservableCollection<string>(categories);
@@ -33,6 +41,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 				var viewModel =
 					new ItemListViewModel(
 						this.Navigation,
+						this.inventoryClient,
 						$"{target} Category",
 						this.inventoryClient.GetItemsInCategoryAsync(target));
 
@@ -50,6 +59,11 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		{
 			get;
 			set;
+		}
+		public DelegateCommand RefreshCommand
+		{
+			get;
+			private set;
 		}
 	}
 }

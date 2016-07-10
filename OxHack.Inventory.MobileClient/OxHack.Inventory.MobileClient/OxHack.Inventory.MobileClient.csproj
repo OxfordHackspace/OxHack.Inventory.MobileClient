@@ -79,8 +79,8 @@
       <HintPath>..\..\packages\Prism.Core.6.1.0\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Prism.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Prism.Forms, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Forms.6.1.0-pre4\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Prism.Forms.dll</HintPath>
+    <Reference Include="Prism.Forms, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Forms.6.0.1\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Prism.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -153,7 +153,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OxHack.Inventory.WebClient\OxHack.Inventory.ApiClient.csproj">
+    <ProjectReference Include="..\..\OxHack.Inventory.ApiClient\OxHack.Inventory.ApiClient.csproj">
       <Project>{f1d7a7af-df86-4be4-a27f-d355d12951c7}</Project>
       <Name>OxHack.Inventory.ApiClient</Name>
     </ProjectReference>

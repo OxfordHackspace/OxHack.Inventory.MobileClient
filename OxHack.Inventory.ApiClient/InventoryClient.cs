@@ -16,8 +16,8 @@ namespace OxHack.Inventory.ApiClient
 	{
 		public InventoryClient(Uri apiUri)
 		{
-			this.CategoriesResource = new Uri(apiUri, "categories");
-			this.ItemsResource = new Uri(apiUri, "items");
+			this.CategoriesResource = new Uri(apiUri, "categories/");
+			this.ItemsResource = new Uri(apiUri, "items/");
 		}
 
 		public async Task<IReadOnlyCollection<string>> GetAllCategoriesAsync()
@@ -25,21 +25,18 @@ namespace OxHack.Inventory.ApiClient
             try
             {
                 using (var client = new HttpClient())
-                {
-                    var response = await InventoryClient.GetAsyncWithTimeout(this.CategoriesResource, client);
+				{
+					var response = await InventoryClient.GetAsyncWithTimeout(this.CategoriesResource, client);
 
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        throw new HttpRequestException($"HTTP {response.StatusCode}. {response.ToString()}");
-                    }
+					InventoryClient.ThrowExceptionOnError(response);
 
-                    var content = await response.Content.ReadAsStringAsync();
+					var content = await response.Content.ReadAsStringAsync();
 
-                    var categories = JsonConvert.DeserializeObject<List<string>>(content);
+					var categories = JsonConvert.DeserializeObject<List<string>>(content);
 
-                    return categories;
-                }
-            }
+					return categories;
+				}
+			}
             catch (TaskCanceledException e)
             {
                 throw new InvalidOperationException("You need to be connected to the hackspace's network for this app to work.  If you aren't, then that's the problem.", e);
@@ -54,10 +51,7 @@ namespace OxHack.Inventory.ApiClient
 
 				var response = await InventoryClient.GetAsyncWithTimeout(resource, client);
 
-				if (response.StatusCode != HttpStatusCode.OK)
-				{
-					throw new HttpRequestException($"HTTP {response.StatusCode}. {response.ToString()}");
-				}
+				InventoryClient.ThrowExceptionOnError(response);
 
 				var content = await response.Content.ReadAsStringAsync();
 
@@ -67,10 +61,36 @@ namespace OxHack.Inventory.ApiClient
 			}
 		}
 
+		public async Task<Item> GetItemByIdAsync(Guid id)
+		{
+			using (var client = new HttpClient())
+			{
+				var resource = new Uri(this.ItemsResource, $"{ id }");
+
+				var response = await InventoryClient.GetAsyncWithTimeout(resource, client);
+
+				InventoryClient.ThrowExceptionOnError(response);
+
+				var content = await response.Content.ReadAsStringAsync();
+
+				var item = JsonConvert.DeserializeObject<Item>(content);
+
+				return item;
+			}
+		}
+
 		private static Task<HttpResponseMessage> GetAsyncWithTimeout(Uri resource, HttpClient client)
 		{
 			var token = new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
 			return client.GetAsync(resource, token);
+		}
+
+		private static void ThrowExceptionOnError(HttpResponseMessage response)
+		{
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				throw new HttpRequestException($"HTTP {response.StatusCode}. {response.ToString()}");
+			}
 		}
 
 		private Uri CategoriesResource

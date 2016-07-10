@@ -23,7 +23,7 @@
 		<Button 
 			Grid.Row="1" Grid.Column="0"
 			Text="📖 Browse by Category"
-			Clicked="OnBrowseByCategory"
+			Command="{Binding BrowseByCategoryCommand}"
 			/>
 		<Button 
 			Grid.Row="1" Grid.Column="1"

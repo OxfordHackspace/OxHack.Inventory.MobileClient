@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxHack.Inventory.MobileClie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform Clients", "Platform Clients", "{E9CF3A50-EF71-40A5-82A7-112F9834E8CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxHack.Inventory.ApiClient", "OxHack.Inventory.WebClient\OxHack.Inventory.ApiClient.csproj", "{F1D7A7AF-DF86-4BE4-A27F-D355D12951C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxHack.Inventory.ApiClient", "OxHack.Inventory.ApiClient\OxHack.Inventory.ApiClient.csproj", "{F1D7A7AF-DF86-4BE4-A27F-D355D12951C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,13 +4,13 @@
              x:Class="OxHack.Inventory.MobileClient.Views.CategoryListPage"
 						 Title="Browse By Category">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Order="Secondary" Name="Refresh" />
+		<ToolbarItem Order="Primary" Name="Refresh" Command="{Binding RefreshCommand}" />
 	</ContentPage.ToolbarItems>
+	
 	<ListView
 		x:Name="categoryList"
 		Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
 		ItemsSource="{Binding Categories}"
 		SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
 		/>
-
 </ContentPage>
