@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
-						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
+						 xmlns:views="clr-namespace:OxHack.Inventory.MobileClient.Views"
              x:Class="OxHack.Inventory.MobileClient.Views.ItemDetailsPage"
 						 Title="{Binding Title}"
 						 >
@@ -12,77 +12,56 @@
 				<Setter Property="FontSize" Value="Small"/>
 				<Setter Property="TextColor" Value="Accent"/>
 			</Style>
-			<Style x:Key="data" TargetType="Label">
-				<Setter Property="FontSize" Value="Medium"/>
-				<Setter Property="TextColor" Value="Default"/>
-				<Setter Property="Margin" Value="6, 3, 6, 6"/>
-				<Setter Property="IsVisible" Value="{Binding IsNotEditing}"/>
-			</Style>
-			<Style TargetType="Entry">
-				<Setter Property="IsVisible" Value="{Binding IsEditing}"/>
-				<Setter Property="Margin" Value="0, -6, 0, -6"/>
-			</Style>
-		<Style TargetType="Editor">
-				<Setter Property="IsVisible" Value="{Binding IsEditing}"/>
-				<Setter Property="Margin" Value="0, -6, 0, -6"/>
-			</Style>
+			<!--<Style TargetType="views:EditFieldView">
+				<Setter Property="BackgroundColor" Value="Pink"/>
+			</Style>-->
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Order="Primary" Text="{Binding ToolBarItemCommandText}" Command="{Binding ToolBarItemCommand}" />
-	</ContentPage.ToolbarItems>
 
 	<ScrollView>
 		<StackLayout Orientation="Vertical">
 			<Label Text="Name"/>
-			<Label Style="{StaticResource data}" Text="{Binding Name}" />
-			<Entry Text="{Binding Name}" />
+			<views:EditFieldView BindingContext="{Binding Name}" />
+			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
 
 			<Label Text="Manufacturer"/>
-			<Label Style="{StaticResource data}" Text="{Binding Manufacturer}" />
-			<Entry Text="{Binding Manufacturer}" />
+			<views:EditFieldView BindingContext="{Binding Manufacturer}"/>
+			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Label Text="Model"/>
-			<Label Style="{StaticResource data}" Text="{Binding Model}"/>
-			<Entry Text="{Binding Model}"/>
+			<views:EditFieldView BindingContext="{Binding Model}"/>
+			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Label Text="Quantity"/>
-			<Label Style="{StaticResource data}" Text="{Binding Quantity}"/>
-			<Entry Text="{Binding Quantity}"/>
+			<Label Text="{Binding Quantity.Value}"/>
+			<Entry Text="{Binding Quantity.Value}" Keyboard="Numeric"/>
 
 			<Label Text="Appearance"/>
-			<Label Style="{StaticResource data}" Text="{Binding Appearance}"/>
-			<Entry Text="{Binding Appearance}"/>
+			<views:EditFieldView BindingContext="{Binding Appearance}"/>
 
 			<Label Text="Category"/>
-			<Label Style="{StaticResource data}" Text="{Binding Category}"/>
-			<Entry Text="{Binding Category}"/>
+			<views:EditFieldView BindingContext="{Binding Category}"/>
 
 			<Label Text="Spec"/>
-			<Label Style="{StaticResource data}" Text="{Binding Spec}"/>
-			<Entry Text="{Binding Spec}"/>
+			<views:EditFieldView BindingContext="{Binding Spec}"/>
 
 			<Label Text="Assigned Location"/>
-			<Label Style="{StaticResource data}" Text="{Binding AssignedLocation}"/>
-			<Entry Text="{Binding AssignedLocation}"/>
+			<views:EditFieldView BindingContext="{Binding AssignedLocation}"/>
 
 			<Label Text="Current Location"/>
-			<Label Style="{StaticResource data}" Text="{Binding CurrentLocation}"/>
-			<Entry Text="{Binding CurrentLocation}"/>
+			<views:EditFieldView BindingContext="{Binding CurrentLocation}"/>
 
 			<Label Text="Is Loan?"/>
-			<Label Style="{StaticResource data}" Text="{Binding IsLoan}"/>
-			<Entry Text="{Binding IsLoan}"/>
+			<Label Text="{Binding IsLoan}"/>
+			<Switch IsToggled="{Binding IsLoan}" IsVisible="{Binding IsLoan}" />
 
 			<Label Text="Origin"/>
-			<Label Style="{StaticResource data}" Text="{Binding Origin}"/>
-			<Entry Text="{Binding Origin}"/>
+			<views:EditFieldView BindingContext="{Binding Origin}"/>
 
 			<Label Text="Additional Information"/>
-			<Label Style="{StaticResource data}" Text="{Binding AdditionalInformation}"/>
-			<Editor Text="{Binding AdditionalInformation}"/>
+			<views:EditFieldView BindingContext="{Binding AdditionalInformation}"/>
 		</StackLayout>
 	</ScrollView>
 </ContentPage>

@@ -10,6 +10,7 @@ namespace OxHack.Inventory.ApiClient.Models
     {
         public Item(
             Guid id,
+            int version,
             string additionalInformation,
             string appearance,
             string assignedLocation,
@@ -23,9 +24,11 @@ namespace OxHack.Inventory.ApiClient.Models
             int quantity,
             string spec,
             IEnumerable<Uri> photos,
+
             string concurrencyId)
         {
             this.Id = id;
+            this.Version = version;
             this.AdditionalInformation = additionalInformation;
             this.Appearance = appearance;
             this.AssignedLocation = assignedLocation;
@@ -43,6 +46,11 @@ namespace OxHack.Inventory.ApiClient.Models
         }
 
         public Guid Id
+        {
+            get;
+        }
+
+        public int Version
         {
             get;
         }

@@ -4,37 +4,118 @@ using OxHack.Inventory.MobileClient.Views;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
 	public class ItemDetailsViewModel : PageViewModelBase
 	{
-		private readonly Item model;
 		private readonly InventoryClient inventoryClient;
 		private bool isEditing;
 
-		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
+        private Guid id;
+        private string concurrencyId;
+        private int version;
+
+        public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
 		: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
-			this.model = model;
 
-			this.ToolBarItemCommand =
-				new DelegateCommand(async () =>
-				{
-					if (!this.IsEditing)
-					{
-						var target = await this.inventoryClient.GetItemByIdAsync(this.model.Id);
-						await this.Navigation.PushAsync(new ItemDetailsPage(new ItemDetailsViewModel(this.Navigation, this.inventoryClient, target, isEditing: true)));
-					}
-					else
-					{
-						await this.Navigation.PopAsync();
-					}
-				});
+			this.InitialiseEditFields();
+			this.LoadModel(model);
 
 			this.IsEditing = isEditing;
+		}
+
+		private void InitialiseEditFields()
+		{
+			this.Name = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Manufacturer = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Model = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Quantity = new EditFieldViewModel<int>(async () => await this.SaveChangeAsync());
+			this.Category = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Spec = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Appearance = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.CurrentLocation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.AssignedLocation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.IsLoan = new EditFieldViewModel<bool>(async () => await this.SaveChangeAsync());
+			this.Origin = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.AdditionalInformation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+		}
+		private void LoadModel(Item model)
+		{
+			this.id = model.Id;
+			this.concurrencyId = model.ConcurrencyId;
+			this.version = model.Version;
+
+			this.Name.Value = model.Name;
+			this.Manufacturer.Value = model.Manufacturer;
+			this.Model.Value = model.Model;
+			this.Quantity.Value = model.Quantity;
+			this.Category.Value = model.Category;
+			this.Spec.Value = model.Spec;
+			this.Appearance.Value = model.Appearance;
+			this.CurrentLocation.Value = model.CurrentLocation;
+			this.AssignedLocation.Value = model.AssignedLocation;
+			this.IsLoan.Value = model.IsLoan;
+			this.Origin.Value = model.Origin;
+			this.AdditionalInformation.Value = model.AdditionalInformation;
+
+			this.Photos = model.Photos.ToList();
+		}
+
+		private Item CopyToModel()
+        {
+            var model = new Item(
+                this.id,
+                this.version,
+                this.AdditionalInformation.Value,
+                this.Appearance.Value,
+                this.AssignedLocation.Value,
+                this.Category.Value,
+                this.CurrentLocation.Value,
+                this.IsLoan.Value,
+                this.Manufacturer.Value,
+                this.Model.Value,
+                this.Name.Value,
+                this.Origin.Value,
+                this.Quantity.Value,
+                this.Spec.Value,
+                this.Photos.ToList(),
+                this.concurrencyId);
+
+            return model;
+        }
+
+        private async Task SaveChangeAsync()
+		{
+            // Eventually, when OData is implemented, send over just the Delta using PATCH.
+            // For now we send over the whole entity.
+
+            await this.inventoryClient.SaveItemAsync(this.CopyToModel());
+
+            // TODO: Start an animation here.
+            var tryCount = 3;
+            for (int i = 1; i <= tryCount; i++)
+            {
+                await Task.Delay(500 * i);
+                var update = await this.inventoryClient.GetItemByIdAsync(this.id);
+
+                if (update.Version > this.version)
+                {
+                    this.LoadModel(update);
+                    break;
+                }
+                if (i == tryCount)
+                {
+                    // TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
+                    await this.Navigation.PopAsync();
+                }
+            }
+            // TODO: End the animation here.
 		}
 
 		public string Title
@@ -47,15 +128,6 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 						: "Item Details";
 			}
 		}
-
-		public DelegateCommand ToolBarItemCommand
-		{
-			get;
-			private set;
-		}
-
-		public string ToolBarItemCommandText
-			=> this.IsEditing ? "Save" : "Edit";
 
 		public bool IsEditing
 		{
@@ -73,43 +145,70 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		public bool IsNotEditing
 			=> !this.IsEditing;
 
-		public string Name
-			=> this.model.Name;
 
-		public string Manufacturer
-			=> this.model.Manufacturer;
+		public EditFieldViewModel<string> Name
+		{
+			get; set;
+		}
 
-		public string Model
-			=> this.model.Model;
+		public EditFieldViewModel<string> Manufacturer
+		{
+			get; set;
+		}
 
-		public int Quantity
-			=> this.model.Quantity;
+		public EditFieldViewModel<string> Model
+		{
+			get; set;
+		}
 
-		public string Category
-			=> this.model.Category;
+		public EditFieldViewModel<int> Quantity
+		{
+			get; set;
+		}
 
-		public string Spec
-			=> this.model.Spec;
+		public EditFieldViewModel<string> Category
+		{
+			get; set;
+		}
 
-		public string Appearance
-			=> this.model.Appearance;
+		public EditFieldViewModel<string> Spec
+		{
+			get; set;
+		}
 
-		public string AssignedLocation
-			=> this.model.AssignedLocation;
+		public EditFieldViewModel<string> Appearance
+		{
+			get; set;
+		}
 
-		public string CurrentLocation
-			=> this.model.CurrentLocation;
+		public EditFieldViewModel<string> AssignedLocation
+		{
+			get; set;
+		}
 
-		public bool IsLoan
-			=> this.model.IsLoan;
+		public EditFieldViewModel<string> CurrentLocation
+		{
+			get; set;
+		}
 
-		public string Origin
-			=> this.model.Origin;
+		public EditFieldViewModel<bool> IsLoan
+		{
+			get; set;
+		}
 
-		public string AdditionalInformation
-			=> this.model.AdditionalInformation;
+		public EditFieldViewModel<string> Origin
+		{
+			get; set;
+		}
+
+		public EditFieldViewModel<string> AdditionalInformation
+		{
+			get; set;
+		}
 
 		public IEnumerable<Uri> Photos
-			=> this.model.Photos;
+		{
+			get; set;
+		}
 	}
 }
