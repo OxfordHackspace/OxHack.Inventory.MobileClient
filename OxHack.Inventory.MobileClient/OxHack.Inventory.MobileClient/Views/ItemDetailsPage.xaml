@@ -12,9 +12,6 @@
 				<Setter Property="FontSize" Value="Small"/>
 				<Setter Property="TextColor" Value="Accent"/>
 			</Style>
-			<!--<Style TargetType="views:EditFieldView">
-				<Setter Property="BackgroundColor" Value="Pink"/>
-			</Style>-->
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
@@ -22,17 +19,14 @@
 		<StackLayout Orientation="Vertical">
 			<Label Text="Name"/>
 			<views:EditFieldView BindingContext="{Binding Name}" />
-			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
 
 			<Label Text="Manufacturer"/>
 			<views:EditFieldView BindingContext="{Binding Manufacturer}"/>
-			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Label Text="Model"/>
 			<views:EditFieldView BindingContext="{Binding Model}"/>
-			<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Black"/>
 
 			<Label Text="Quantity"/>
 			<Label Text="{Binding Quantity.Value}"/>
