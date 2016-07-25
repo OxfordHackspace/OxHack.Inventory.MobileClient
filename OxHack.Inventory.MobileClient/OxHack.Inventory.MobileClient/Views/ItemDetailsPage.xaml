@@ -29,8 +29,7 @@
 			<views:EditFieldView BindingContext="{Binding Model}"/>
 
 			<Label Text="Quantity"/>
-			<Label Text="{Binding Quantity.Value}"/>
-			<Entry Text="{Binding Quantity.Value}" Keyboard="Numeric"/>
+			<views:EditFieldView BindingContext="{Binding Quantity}" Keyboard="Numeric" />
 
 			<Label Text="Appearance"/>
 			<views:EditFieldView BindingContext="{Binding Appearance}"/>

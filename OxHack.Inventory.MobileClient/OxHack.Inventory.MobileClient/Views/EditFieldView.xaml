@@ -5,23 +5,14 @@
              x:Class="OxHack.Inventory.MobileClient.Views.EditFieldView"
 						 Orientation="Horizontal"
 						 HorizontalOptions="FillAndExpand"
+						 x:Name="root"
 						 >
 	<StackLayout.Resources>
 		<ResourceDictionary>
 			<Style TargetType="Label">
 				<Setter Property="FontSize" Value="Medium"/>
 				<Setter Property="TextColor" Value="Default"/>
-				<!--<Setter Property="Margin" Value="6, 3, 6, 6"/>-->
 			</Style>
-			<!--<Style TargetType="Entry">
-				<Setter Property="Margin" Value="0, -6, 0, -6"/>
-			</Style>
-			<Style TargetType="Button">
-				<Setter Property="Margin" Value="0, -6, 0, -6"/>
-			</Style>
-			<Style TargetType="Editor">
-				<Setter Property="Margin" Value="0, -6, 0, -6"/>
-			</Style>-->
 		</ResourceDictionary>
 	</StackLayout.Resources>
 
@@ -30,14 +21,19 @@
 		Text="{Binding Value}"
 		IsVisible="{Binding IsNotInEditMode}" />
 	<Button
+		x:Name="editButton"
 		Text="✏️"
 		Command="{Binding BeginEditCommand}"
 		IsVisible="{Binding IsNotInEditMode}" />
 
 	<Entry
+		x:Name="entry"
 		HorizontalOptions="FillAndExpand"
-		Text="{Binding EditedValue}"
-		IsVisible="{Binding IsInEditMode}" />
+		BindingContext="{x:Reference root}"
+		Text="{Binding BindingContext.EditedValue}"
+		IsVisible="{Binding BindingContext.IsInEditMode}"
+		Keyboard="{Binding Keyboard}"
+		/>
 	<Button
 		Text="✖️"
 		Command="{Binding DiscardChangesCommand}"

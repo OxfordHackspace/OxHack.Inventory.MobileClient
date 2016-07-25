@@ -21,6 +21,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			get;
 			private set;
 		}
+
 		public CategoryListViewModel CategoriesViewModel
 		{
 			get;
