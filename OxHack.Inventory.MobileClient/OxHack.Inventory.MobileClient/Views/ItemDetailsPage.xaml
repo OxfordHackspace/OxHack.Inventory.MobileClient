@@ -5,6 +5,7 @@
 						 xmlns:views="clr-namespace:OxHack.Inventory.MobileClient.Views"
              x:Class="OxHack.Inventory.MobileClient.Views.ItemDetailsPage"
 						 Title="{Binding Title}"
+						 x:Name="root"
 						 >
 	<ContentPage.Resources>
 		<ResourceDictionary>
@@ -17,20 +18,18 @@
 
 	<ScrollView>
 		<StackLayout Orientation="Vertical">
+			<ScrollView
+				Orientation="Horizontal"
+				HeightRequest="300">
+				<StackLayout Orientation="Horizontal">
+					<StackLayout x:Name="photoLayout" Orientation="Horizontal">
+					</StackLayout>
+					<Button FontSize="48" WidthRequest="100" Text="+"/>
+				</StackLayout>
+			</ScrollView>
+
 			<Label Text="Name"/>
 			<views:EditFieldView BindingContext="{Binding Name}" />
-
-			<!--<ListView ItemsSource="{Binding Photos}" Rotation="90" RotationX="0" RotationY="0">
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<Grid>
-								<Image Rotation="-90" RotationX="0" RotationY="0" Source="{Binding}" />
-							</Grid>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>-->
 
 			<Label Text="Manufacturer"/>
 			<views:EditFieldView BindingContext="{Binding Manufacturer}"/>
@@ -57,8 +56,7 @@
 			<views:EditFieldView BindingContext="{Binding CurrentLocation}"/>
 
 			<Label Text="Is Loan?"/>
-			<Label Text="{Binding IsLoan}"/>
-			<Switch IsToggled="{Binding IsLoan}" IsVisible="{Binding IsLoan}" />
+			<views:ToggleView BindingContext="{Binding IsLoan}" />
 
 			<Label Text="Origin"/>
 			<views:EditFieldView BindingContext="{Binding Origin}"/>

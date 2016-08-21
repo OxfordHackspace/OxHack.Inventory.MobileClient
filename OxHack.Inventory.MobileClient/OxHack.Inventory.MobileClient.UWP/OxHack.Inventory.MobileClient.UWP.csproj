@@ -95,6 +95,12 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="..\oxhack.inventory.mobileclient\assets\fonts\IMFeENit28P.ttf">
+      <Link>Assets\Fonts\IMFeENit28P.ttf</Link>
+    </Content>
+    <Content Include="..\oxhack.inventory.mobileclient\assets\fonts\IMFeENrm28P.ttf">
+      <Link>Assets\Fonts\IMFeENrm28P.ttf</Link>
+    </Content>
     <None Include="OxHack.Inventory.MobileClient.UWP_TemporaryKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
