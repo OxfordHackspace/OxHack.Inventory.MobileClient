@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.ComponentModel;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
@@ -15,11 +16,12 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		private readonly InventoryClient inventoryClient;
 		private bool isEditing;
 
-        private Guid id;
-        private string concurrencyId;
-        private int version;
+		private Guid id;
+		private string concurrencyId;
+		private int version;
+		private List<EditFieldViewModelBase> fields;
 
-        public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
+		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
 		: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
@@ -44,7 +46,43 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.IsLoan = new EditFieldViewModel<bool>(async () => await this.SaveChangeAsync());
 			this.Origin = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
 			this.AdditionalInformation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+
+			var fields = new List<EditFieldViewModelBase>();
+
+			fields.Add(this.Name);
+			fields.Add(this.Manufacturer);
+			fields.Add(this.Model);
+			fields.Add(this.Quantity);
+			fields.Add(this.Category);
+			fields.Add(this.Spec);
+			fields.Add(this.Appearance);
+			fields.Add(this.CurrentLocation);
+			fields.Add(this.AssignedLocation);
+			fields.Add(this.IsLoan);
+			fields.Add(this.Origin);
+			fields.Add(this.AdditionalInformation);
+
+			foreach (var field in fields)
+			{
+				field.PropertyChanged += this.OnFieldPropertyChanged;
+			}
+
+			this.fields = fields;
 		}
+
+		private void OnFieldPropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(EditFieldViewModel<Object>.IsInEditMode))
+			{
+				var isAnyInEditMode = this.fields.Any(item => item.IsInEditMode);
+
+				foreach (var field in this.fields)
+				{
+					field.IsEditEnabled = !isAnyInEditMode;
+				}
+			}
+		}
+
 		private void LoadModel(Item model)
 		{
 			this.id = model.Id;
@@ -68,54 +106,54 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		}
 
 		private Item CopyToModel()
-        {
-            var model = new Item(
-                this.id,
-                this.version,
-                this.AdditionalInformation.Value,
-                this.Appearance.Value,
-                this.AssignedLocation.Value,
-                this.Category.Value,
-                this.CurrentLocation.Value,
-                this.IsLoan.Value,
-                this.Manufacturer.Value,
-                this.Model.Value,
-                this.Name.Value,
-                this.Origin.Value,
-                this.Quantity.Value,
-                this.Spec.Value,
-                this.Photos.ToList(),
-                this.concurrencyId);
-
-            return model;
-        }
-
-        private async Task SaveChangeAsync()
 		{
-            // Eventually, when OData is implemented, send over just the Delta using PATCH.
-            // For now we send over the whole entity.
+			var model = new Item(
+				this.id,
+				this.version,
+				this.AdditionalInformation.Value,
+				this.Appearance.Value,
+				this.AssignedLocation.Value,
+				this.Category.Value,
+				this.CurrentLocation.Value,
+				this.IsLoan.Value,
+				this.Manufacturer.Value,
+				this.Model.Value,
+				this.Name.Value,
+				this.Origin.Value,
+				this.Quantity.Value,
+				this.Spec.Value,
+				this.Photos.ToList(),
+				this.concurrencyId);
 
-            await this.inventoryClient.SaveItemAsync(this.CopyToModel());
+			return model;
+		}
 
-            // TODO: Start an animation here.
-            var tryCount = 3;
-            for (int i = 1; i <= tryCount; i++)
-            {
-                await Task.Delay(500 * i);
-                var update = await this.inventoryClient.GetItemByIdAsync(this.id);
+		private async Task SaveChangeAsync()
+		{
+			// Eventually, when OData is implemented, send over just the Delta using PATCH.
+			// For now we send over the whole entity.
 
-                if (update.Version > this.version)
-                {
-                    this.LoadModel(update);
-                    break;
-                }
-                if (i == tryCount)
-                {
-                    // TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
-                    await this.Navigation.PopAsync();
-                }
-            }
-            // TODO: End the animation here.
+			await this.inventoryClient.SaveItemAsync(this.CopyToModel());
+
+			// TODO: Start an animation here.
+			var tryCount = 3;
+			for (int i = 1; i <= tryCount; i++)
+			{
+				await Task.Delay(500 * i);
+				var update = await this.inventoryClient.GetItemByIdAsync(this.id);
+
+				if (update.Version > this.version)
+				{
+					this.LoadModel(update);
+					break;
+				}
+				if (i == tryCount)
+				{
+					// TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
+					await this.Navigation.PopAsync();
+				}
+			}
+			// TODO: End the animation here.
 		}
 
 		public string Title

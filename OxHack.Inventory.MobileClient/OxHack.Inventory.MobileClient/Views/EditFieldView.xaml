@@ -24,7 +24,8 @@
 		x:Name="editButton"
 		Text="✏️"
 		Command="{Binding BeginEditCommand}"
-		IsVisible="{Binding IsNotInEditMode}" />
+		IsVisible="{Binding IsNotInEditMode}"
+		IsEnabled="{Binding IsEditEnabled}" />
 
 	<Entry
 		x:Name="entry"

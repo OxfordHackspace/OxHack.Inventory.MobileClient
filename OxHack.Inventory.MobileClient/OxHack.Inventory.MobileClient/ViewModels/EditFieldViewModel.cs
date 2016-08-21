@@ -8,24 +8,23 @@ using System.Threading.Tasks;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
-	public class EditFieldViewModel<T> : BindableBase
+	public class EditFieldViewModel<T> : EditFieldViewModelBase
 	{
 		private T value;
-		private bool isInEditMode;
 
 		public EditFieldViewModel(Action onSave = null)
 		{
-			this.BeginEditCommand = 
+			this.BeginEditCommand =
 				new DelegateCommand(
 					() =>
 					{
 						this.EditedValue = this.Value;
 						base.OnPropertyChanged(nameof(this.EditedValue));
 						this.IsInEditMode = true;
-                    },
+					},
 					() => this.IsNotInEditMode);
 
-			this.DiscardChangesCommand = 
+			this.DiscardChangesCommand =
 				new DelegateCommand(
 					() =>
 					{
@@ -35,7 +34,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 					},
 					() => this.IsInEditMode);
 
-			this.SaveChangesCommand = 
+			this.SaveChangesCommand =
 				new DelegateCommand(
 					() =>
 					{
@@ -63,6 +62,12 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			get;
 			set;
 		}
+	}
+
+	public abstract class EditFieldViewModelBase : BindableBase
+	{
+		private bool isInEditMode;
+		private bool isEditEnabled = true;
 
 		public bool IsInEditMode
 		{
@@ -74,14 +79,26 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			{
 				base.SetProperty(ref this.isInEditMode, value);
 				base.OnPropertyChanged(nameof(this.IsNotInEditMode));
-                this.BeginEditCommand.RaiseCanExecuteChanged();
-                this.DiscardChangesCommand.RaiseCanExecuteChanged();
-                this.SaveChangesCommand.RaiseCanExecuteChanged();
-            }
+				this.BeginEditCommand.RaiseCanExecuteChanged();
+				this.DiscardChangesCommand.RaiseCanExecuteChanged();
+				this.SaveChangesCommand.RaiseCanExecuteChanged();
+			}
 		}
 
 		public bool IsNotInEditMode
 			=> !this.IsInEditMode;
+
+		public bool IsEditEnabled
+		{
+			get
+			{
+				return this.isEditEnabled;
+			}
+			set
+			{
+				base.SetProperty(ref this.isEditEnabled, value);
+			}
+		}
 
 		public DelegateCommand BeginEditCommand
 		{

@@ -20,7 +20,17 @@
 			<Label Text="Name"/>
 			<views:EditFieldView BindingContext="{Binding Name}" />
 
-			<Image VerticalOptions="Start" HorizontalOptions="Center" Source="{Binding Photos[0]}"/>
+			<!--<ListView ItemsSource="{Binding Photos}" Rotation="90" RotationX="0" RotationY="0">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<Grid>
+								<Image Rotation="-90" RotationX="0" RotationY="0" Source="{Binding}" />
+							</Grid>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>-->
 
 			<Label Text="Manufacturer"/>
 			<views:EditFieldView BindingContext="{Binding Manufacturer}"/>
