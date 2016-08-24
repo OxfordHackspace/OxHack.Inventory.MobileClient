@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
+						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
+             x:Class="OxHack.Inventory.MobileClient.Views.PhotoActionsPage"
+						 x:Name="root"
+						 >
+	<ScrollView>
+		<StackLayout Orientation="Vertical">
+			<Image Source="{Binding Photo}"
+             HorizontalOptions="CenterAndExpand"/>
+
+			<Button Text="Open in browser..." 
+              Command="{Binding OpenInBrowserCommand}"
+              HorizontalOptions="Fill"/>
+			<Button Text="Remove from item" 
+              Command="{Binding RemoveFromItemCommand}"
+              HorizontalOptions="Fill"/>
+			<Button Text="Go back" 
+              Command="{Binding CloseCommand}"
+              HorizontalOptions="Fill"/>
+		</StackLayout>
+	</ScrollView>
+</ContentPage>

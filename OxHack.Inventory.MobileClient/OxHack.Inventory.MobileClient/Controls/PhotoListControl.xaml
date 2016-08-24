@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView xmlns="http://xamarin.com/schemas/2014/forms"
+						xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+						xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
+						xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
+						x:Class="OxHack.Inventory.MobileClient.Controls.PhotoListControl"
+						Orientation="Horizontal"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Start"
+						>
+
+	<StackLayout Orientation="Horizontal">
+		<StackLayout x:Name="photoLayout" Orientation="Horizontal">
+		</StackLayout>
+		<Button FontSize="48" WidthRequest="100" VerticalOptions="FillAndExpand" Text="+"/>
+	</StackLayout>
+
+</ScrollView>

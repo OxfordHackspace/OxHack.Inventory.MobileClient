@@ -20,6 +20,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		private string concurrencyId;
 		private int version;
 		private List<EditFieldViewModelBase> fields;
+		private List<Uri> photos;
 
 		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
 		: base(navigation)
@@ -244,9 +245,30 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			get; set;
 		}
 
-		public IEnumerable<Uri> Photos
+		public List<Uri> Photos
 		{
-			get; set;
+			get
+			{
+				return this.photos;
+			}
+			set
+			{
+				var oldPhotos = this.photos;
+				var newPhotos = value;
+
+				base.SetProperty(ref this.photos, value);
+
+				if (oldPhotos != null && newPhotos != null)
+				{
+					var added = newPhotos.Except(oldPhotos);
+					var removed = oldPhotos.Except(newPhotos);
+
+					if (added.Any() || removed.Any())
+					{
+						this.SaveChangeAsync();
+					}
+				}
+			}
 		}
 	}
 }

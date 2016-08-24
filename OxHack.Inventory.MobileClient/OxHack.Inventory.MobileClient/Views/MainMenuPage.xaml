@@ -44,7 +44,7 @@
 
 		<Button
 			Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-			IsEnabled="False"
-			Text="📄 Create new entry"/>
+			Command="{Binding AddItemCommand}"
+			Text="📄 Add item"/>
 	</Grid>
 </ContentPage>

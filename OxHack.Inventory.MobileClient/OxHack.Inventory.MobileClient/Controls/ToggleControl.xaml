@@ -2,7 +2,7 @@
 <StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
-             x:Class="OxHack.Inventory.MobileClient.Views.EditFieldView"
+             x:Class="OxHack.Inventory.MobileClient.Controls.ToggleControl"
 						 Orientation="Horizontal"
 						 HorizontalOptions="FillAndExpand"
 						 x:Name="root"
@@ -13,13 +13,21 @@
 				<Setter Property="FontSize" Value="Medium"/>
 				<Setter Property="TextColor" Value="Default"/>
 			</Style>
+			<Style TargetType="Button">
+				<Setter Property="HeightRequest" Value="50"/>
+				<Setter Property="WidthRequest" Value="56"/>
+			</Style>
 		</ResourceDictionary>
 	</StackLayout.Resources>
 
 	<Label
-		HorizontalOptions="FillAndExpand"
+		HorizontalOptions="StartAndExpand"
 		Text="{Binding Value}"
 		IsVisible="{Binding IsNotInEditMode}" />
+	<Label
+		HorizontalOptions="Start"
+		Text="{Binding EditedValue}"
+		IsVisible="{Binding IsInEditMode}" />
 	<Button
 		x:Name="editButton"
 		Text="✏️"
@@ -27,13 +35,11 @@
 		IsVisible="{Binding IsNotInEditMode}"
 		IsEnabled="{Binding IsEditEnabled}" />
 
-	<Entry
-		x:Name="entry"
-		HorizontalOptions="FillAndExpand"
+	<Switch
+		HorizontalOptions="StartAndExpand"
 		BindingContext="{x:Reference root}"
-		Text="{Binding BindingContext.EditedValue}"
+		IsToggled="{Binding BindingContext.EditedValue}"
 		IsVisible="{Binding BindingContext.IsInEditMode}"
-		Keyboard="{Binding Keyboard}"
 		/>
 	<Button
 		Text="✖️"

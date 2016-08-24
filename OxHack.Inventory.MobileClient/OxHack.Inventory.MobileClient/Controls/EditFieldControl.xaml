@@ -2,7 +2,7 @@
 <StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
-             x:Class="OxHack.Inventory.MobileClient.Views.ToggleView"
+             x:Class="OxHack.Inventory.MobileClient.Controls.EditFieldControl"
 						 Orientation="Horizontal"
 						 HorizontalOptions="FillAndExpand"
 						 x:Name="root"
@@ -12,6 +12,10 @@
 			<Style TargetType="Label">
 				<Setter Property="FontSize" Value="Medium"/>
 				<Setter Property="TextColor" Value="Default"/>
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="HeightRequest" Value="50"/>
+				<Setter Property="WidthRequest" Value="56"/>
 			</Style>
 		</ResourceDictionary>
 	</StackLayout.Resources>
@@ -27,11 +31,13 @@
 		IsVisible="{Binding IsNotInEditMode}"
 		IsEnabled="{Binding IsEditEnabled}" />
 
-	<Switch
-		HorizontalOptions="StartAndExpand"
+	<Entry
+		x:Name="entry"
+		HorizontalOptions="FillAndExpand"
 		BindingContext="{x:Reference root}"
-		IsToggled="{Binding BindingContext.EditedValue}"
+		Text="{Binding BindingContext.EditedValue}"
 		IsVisible="{Binding BindingContext.IsInEditMode}"
+		Keyboard="{Binding Keyboard}"
 		/>
 	<Button
 		Text="✖️"

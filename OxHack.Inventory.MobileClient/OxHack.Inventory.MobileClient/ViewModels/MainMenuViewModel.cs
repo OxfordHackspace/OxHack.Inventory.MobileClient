@@ -12,19 +12,9 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		: base(navigation)
 		{
 			this.CategoriesViewModel = new CategoryListViewModel(navigation, inventoryClient);
-
 			this.BrowseByCategoryCommand = new DelegateCommand(() => this.Navigation.PushAsync(new CategoryListPage(this.CategoriesViewModel)));
-		}
 
-		public DelegateCommand BrowseByCategoryCommand
-		{
-			get;
-			private set;
-		}
-
-		public CategoryListViewModel CategoriesViewModel
-		{
-			get;
+			this.AddItemCommand = new DelegateCommand(() => this.Navigation.PushAsync(new AddItemPage(new AddItemViewModel())));
 		}
 
 		internal async Task InitializeAsync()
@@ -33,6 +23,21 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 				this.CategoriesViewModel.InitializeAsync()/*,
                 this.OtherViewModel.InitializeAsync()*/
 				);
+		}
+
+		public DelegateCommand BrowseByCategoryCommand
+		{
+			get;
+		}
+
+		public CategoryListViewModel CategoriesViewModel
+		{
+			get;
+		}
+
+		public DelegateCommand AddItemCommand
+		{
+			get;
 		}
 	}
 }

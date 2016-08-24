@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
 						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
-						 x:Class="OxHack.Inventory.MobileClient.Views.ItemDetailsPage"
+             x:Class="OxHack.Inventory.MobileClient.Views.AddItemPage"
 						 Title="{Binding Title}"
 						 x:Name="root"
 						 >
@@ -18,44 +18,43 @@
 
 	<ScrollView>
 		<StackLayout Orientation="Vertical">
-
-			<controls:PhotoListControl HeightRequest="200" Photos="{Binding Photos, Mode=TwoWay}"/>
+			<controls:PhotoListControl Photos="{Binding Photos}"/>
 
 			<Label Text="Name"/>
-			<controls:EditFieldControl BindingContext="{Binding Name}" />
+			<Entry Text="{Binding Name}" />
 
 			<Label Text="Manufacturer"/>
-			<controls:EditFieldControl BindingContext="{Binding Manufacturer}"/>
+			<Entry Text="{Binding Manufacturer}"/>
 
 			<Label Text="Model"/>
-			<controls:EditFieldControl BindingContext="{Binding Model}"/>
+			<Entry Text="{Binding Model}"/>
 
 			<Label Text="Quantity"/>
-			<controls:EditFieldControl BindingContext="{Binding Quantity}" Keyboard="Numeric" />
+			<Entry Text="{Binding Quantity}" Keyboard="Numeric" />
 
 			<Label Text="Appearance"/>
-			<controls:EditFieldControl BindingContext="{Binding Appearance}"/>
+			<Entry Text="{Binding Appearance}"/>
 
 			<Label Text="Category"/>
-			<controls:EditFieldControl BindingContext="{Binding Category}"/>
+			<Entry Text="{Binding Category}"/>
 
 			<Label Text="Spec"/>
-			<controls:EditFieldControl BindingContext="{Binding Spec}"/>
+			<Entry Text="{Binding Spec}"/>
 
 			<Label Text="Assigned Location"/>
-			<controls:EditFieldControl BindingContext="{Binding AssignedLocation}"/>
+			<Entry Text="{Binding AssignedLocation}"/>
 
 			<Label Text="Current Location"/>
-			<controls:EditFieldControl BindingContext="{Binding CurrentLocation}"/>
+			<Entry Text="{Binding CurrentLocation}"/>
 
 			<Label Text="Is Loan?"/>
-			<controls:ToggleControl BindingContext="{Binding IsLoan}" />
+			<Switch HorizontalOptions="Start" IsToggled="{Binding IsLoan}" />
 
 			<Label Text="Origin"/>
-			<controls:EditFieldControl BindingContext="{Binding Origin}"/>
+			<Entry Text="{Binding Origin}"/>
 
 			<Label Text="Additional Information"/>
-			<controls:EditFieldControl BindingContext="{Binding AdditionalInformation}"/>
+			<Entry Text="{Binding AdditionalInformation}"/>
 		</StackLayout>
 	</ScrollView>
 </ContentPage>

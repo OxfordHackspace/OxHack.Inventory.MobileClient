@@ -10,9 +10,9 @@ using Prism.Commands;
 
 namespace OxHack.Inventory.MobileClient.Views
 {
-	public partial class ItemDetailsPage : ContentPage
+	public partial class AddItemPage : ContentPage
 	{
-		public ItemDetailsPage(ItemDetailsViewModel viewModel)
+		public AddItemPage(AddItemViewModel viewModel)
 		{
 			this.InitializeComponent();
 			this.BindingContext = viewModel;

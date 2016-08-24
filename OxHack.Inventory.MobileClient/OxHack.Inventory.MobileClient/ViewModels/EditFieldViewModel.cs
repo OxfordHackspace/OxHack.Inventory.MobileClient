@@ -11,6 +11,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 	public class EditFieldViewModel<T> : EditFieldViewModelBase
 	{
 		private T value;
+		private T editedValue;
 
 		public EditFieldViewModel(Action onSave = null)
 		{
@@ -59,8 +60,14 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		public T EditedValue
 		{
-			get;
-			set;
+			get
+			{
+				return this.editedValue;
+			}
+			set
+			{
+				base.SetProperty(ref this.editedValue, value);
+			}
 		}
 	}
 
