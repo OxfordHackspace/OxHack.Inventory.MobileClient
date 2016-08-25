@@ -24,10 +24,7 @@ namespace OxHack.Inventory.MobileClient.Views
 			{
 				if (await DisplayAlert("Remove Photo from Item", "Are you sure?", "Yes", "No"))
 				{
-					var closing = this.CloseCommand.Execute();
-					var delay = Task.Delay(TimeSpan.FromSeconds(1));
-
-					await Task.WhenAll(closing, delay);
+					await this.CloseCommand.Execute();
 					onRemove();
 				}
 			});

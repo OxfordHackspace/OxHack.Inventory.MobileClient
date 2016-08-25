@@ -117,9 +117,43 @@ namespace OxHack.Inventory.ApiClient
 			{
 				InventoryClient.ThrowTimeoutException(e);
 			}
-		}
+        }
 
-		private static async Task<HttpResponseMessage> GetWithTimeoutAsync(Uri resource, HttpClient client)
+        public Task AddPhotos(Guid itemId, string concurrencyId, Uri added)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task RemovePhotos(Guid itemId, string concurrencyId, Uri removed)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var resource = new Uri(this.ItemsResource, $"{ itemId }");
+
+                    var payload = new
+                    {
+                        Id = itemId.ToString(),
+                        ConcurrencyId = concurrencyId,
+                        Photo = removed
+                    };
+
+                    var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+                    content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("domain-model", "RemovePhotoCommand"));
+
+                    var response = await InventoryClient.PutWithTimeoutAsync(resource, content, client);
+
+                    InventoryClient.ThrowExceptionOnError(response);
+                }
+            }
+            catch (TaskCanceledException e)
+            {
+                InventoryClient.ThrowTimeoutException(e);
+            }
+        }
+
+        private static async Task<HttpResponseMessage> GetWithTimeoutAsync(Uri resource, HttpClient client)
 		{
 			var token = new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
 			return await client.GetAsync(resource, token);
@@ -153,5 +187,5 @@ namespace OxHack.Inventory.ApiClient
 		{
 			get;
 		}
-	}
+    }
 }

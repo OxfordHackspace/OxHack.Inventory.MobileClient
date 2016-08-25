@@ -131,7 +131,6 @@
     <Content Include="Assets\Fonts\IMFeENrm28P.ttf" />
     <Content Include="Assets\Fonts\OFL.txt" />
     <EmbeddedResource Include="appConfig.json" />
-    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

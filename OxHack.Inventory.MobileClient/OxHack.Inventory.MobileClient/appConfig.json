@@ -1,3 +1,4 @@
 ﻿{
-  "apiUri": "http://192.168.2.185/inventory/api/"
+  //"apiUri": "http://192.168.2.185/inventory/api/"
+  "apiUri": "http://localhost:5000/api/"
 }

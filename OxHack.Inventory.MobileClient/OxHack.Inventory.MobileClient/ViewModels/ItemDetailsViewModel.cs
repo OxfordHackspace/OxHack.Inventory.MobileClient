@@ -20,7 +20,6 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		private string concurrencyId;
 		private int version;
 		private List<EditFieldViewModelBase> fields;
-		private List<Uri> photos;
 
 		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
 		: base(navigation)
@@ -35,18 +34,18 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		private void InitialiseEditFields()
 		{
-			this.Name = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.Manufacturer = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.Model = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.Quantity = new EditFieldViewModel<int>(async () => await this.SaveChangeAsync());
-			this.Category = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.Spec = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.Appearance = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.CurrentLocation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.AssignedLocation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.IsLoan = new EditFieldViewModel<bool>(async () => await this.SaveChangeAsync());
-			this.Origin = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
-			this.AdditionalInformation = new EditFieldViewModel<string>(async () => await this.SaveChangeAsync());
+			this.Name = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.Manufacturer = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.Model = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.Quantity = new EditFieldViewModel<int>(async () => await this.SaveItemChangeAsync());
+			this.Category = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.Spec = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.Appearance = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.CurrentLocation = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.AssignedLocation = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.IsLoan = new EditFieldViewModel<bool>(async () => await this.SaveItemChangeAsync());
+			this.Origin = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
+			this.AdditionalInformation = new EditFieldViewModel<string>(async () => await this.SaveItemChangeAsync());
 
 			var fields = new List<EditFieldViewModelBase>();
 
@@ -104,6 +103,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.AdditionalInformation.Value = model.AdditionalInformation;
 
 			this.Photos = model.Photos.ToList();
+			this.OnPropertyChanged(nameof(this.Photos));
 		}
 
 		private Item CopyToModel()
@@ -129,35 +129,50 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			return model;
 		}
 
-		private async Task SaveChangeAsync()
-		{
-			// Eventually, when OData is implemented, send over just the Delta using PATCH.
-			// For now we send over the whole entity.
+		private async Task SaveItemChangeAsync()
+        {
+            // Eventually, when OData is implemented, send over just the Delta using PATCH.
+            // For now we send over the whole entity.
+            await this.inventoryClient.SaveItemAsync(this.CopyToModel());
+            await this.ReloadAfterSave();
+        }
 
-			await this.inventoryClient.SaveItemAsync(this.CopyToModel());
+        private async Task SavePhotoAdditionAsync(Uri added)
+        {
+            await this.inventoryClient.AddPhotos(this.id, this.concurrencyId, added);
+			await this.ReloadAfterSave();
+        }
 
-			// TODO: Start an animation here.
-			var tryCount = 3;
-			for (int i = 1; i <= tryCount; i++)
-			{
-				await Task.Delay(500 * i);
-				var update = await this.inventoryClient.GetItemByIdAsync(this.id);
+        private async Task SavePhotoRemovalAsync(Uri removed)
+        {
+            await this.inventoryClient.RemovePhotos(this.id, this.concurrencyId, removed);
+            await this.ReloadAfterSave();
+        }
 
-				if (update.Version > this.version)
-				{
-					this.LoadModel(update);
-					break;
-				}
-				if (i == tryCount)
-				{
-					// TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
-					await this.Navigation.PopAsync();
-				}
-			}
-			// TODO: End the animation here.
-		}
+        private async Task ReloadAfterSave()
+        {
+            // TODO: Start an animation here.
+            var tryCount = 3;
+            for (int i = 1; i <= tryCount; i++)
+            {
+                await Task.Delay(500 * i);
+                var update = await this.inventoryClient.GetItemByIdAsync(this.id);
 
-		public string Title
+                if (update.Version > this.version)
+                {
+                    this.LoadModel(update);
+                    break;
+                }
+                if (i == tryCount)
+                {
+                    // TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
+                    await this.Navigation.PopAsync();
+                }
+            }
+            // TODO: End the animation here.
+        }
+
+        public string Title
 		{
 			get
 			{
@@ -247,28 +262,13 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		public List<Uri> Photos
 		{
-			get
-			{
-				return this.photos;
-			}
-			set
-			{
-				var oldPhotos = this.photos;
-				var newPhotos = value;
-
-				base.SetProperty(ref this.photos, value);
-
-				if (oldPhotos != null && newPhotos != null)
-				{
-					var added = newPhotos.Except(oldPhotos);
-					var removed = oldPhotos.Except(newPhotos);
-
-					if (added.Any() || removed.Any())
-					{
-						this.SaveChangeAsync();
-					}
-				}
-			}
+			get; set;
 		}
-	}
+		
+		public DelegateCommand<Uri> AddPhotoCommand
+			=> new DelegateCommand<Uri>(async photo => await this.SavePhotoAdditionAsync(photo));
+
+		public DelegateCommand<Uri> RemovePhotoCommand
+			=> new DelegateCommand<Uri>(async photo => await this.SavePhotoRemovalAsync(photo));
+    }
 }

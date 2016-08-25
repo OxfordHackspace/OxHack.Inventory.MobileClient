@@ -34,41 +34,70 @@ namespace OxHack.Inventory.MobileClient.Controls
 						Command = new DelegateCommand(() => this.Navigation.PushModalAsync(
 							new PhotoActionsPage(photo, () =>
 								{
-									var copy = this.Photos.ToList();
-									copy.Remove(photo);
-									this.Photos = copy;
+									this.Photos.Remove(photo);
+									this.RemoveCommand?.Execute(photo);
 									this.PrepareImages(this.Photos);
 								})))
 					});
 
-			this.photoLayout.Children.Add(image);
+				this.photoLayout.Children.Add(image);
+			}
 		}
-	}
 
-	public List<Uri> Photos
-	{
-		get
+		public List<Uri> Photos
 		{
-			return (List<Uri>)this.GetValue(PhotoListControl.PhotosProperty);
+			get
+			{
+				return (List<Uri>)this.GetValue(PhotoListControl.PhotosProperty);
+			}
+			set
+			{
+				this.SetValue(PhotoListControl.PhotosProperty, value);
+			}
 		}
-		set
+
+		public static readonly BindableProperty PhotosProperty =
+			BindableProperty.Create(nameof(Photos), typeof(List<Uri>), typeof(PhotoListControl), new List<Uri>(), propertyChanged: OnPhotosChanged);
+
+		private static void OnPhotosChanged(BindableObject bindable, object oldValue, object newValue)
 		{
-			this.SetValue(PhotoListControl.PhotosProperty, value);
+			var target = (PhotoListControl)bindable;
+
+			var newPhotos = newValue as List<Uri>;
+			if (newPhotos != null)
+			{
+				target.PrepareImages(newPhotos);
+			}
 		}
-	}
 
-	public static readonly BindableProperty PhotosProperty =
-		BindableProperty.Create(nameof(Photos), typeof(List<Uri>), typeof(PhotoListControl), new List<Uri>(), propertyChanged: OnPhotosChanged);
-
-	private static void OnPhotosChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		var target = (PhotoListControl)bindable;
-
-		var newPhotos = newValue as List<Uri>;
-		if (newPhotos != null)
+		public DelegateCommand<Uri> AddCommand
 		{
-			target.PrepareImages(newPhotos);
+			get
+			{
+				return (DelegateCommand<Uri>)this.GetValue(PhotoListControl.AddCommandProperty);
+			}
+			set
+			{
+				this.SetValue(PhotoListControl.AddCommandProperty, value);
+			}
 		}
+
+		public static readonly BindableProperty AddCommandProperty =
+			BindableProperty.Create(nameof(AddCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
+
+		public DelegateCommand<Uri> RemoveCommand
+		{
+			get
+			{
+				return (DelegateCommand<Uri>)this.GetValue(PhotoListControl.RemoveCommandProperty);
+			}
+			set
+			{
+				this.SetValue(PhotoListControl.RemoveCommandProperty, value);
+			}
+		}
+
+		public static readonly BindableProperty RemoveCommandProperty =
+			BindableProperty.Create(nameof(RemoveCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
 	}
-}
 }
