@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms"
+             x:Class="OxHack.Inventory.MobileClient.Views.PhotoCapturePage"
+						 x:Name="root"
+						 >
+	<ScrollView>
+		<StackLayout Orientation="Vertical">
+      <controls:CameraView
+        MinimumHeightRequest="200"
+        HorizontalOptions="FillAndExpand"/>
+			<Button Text="Capture" 
+              Command="{Binding CaptureCommand}"
+              HorizontalOptions="Fill"/>
+			<Button Text="Go back" 
+              Command="{Binding CloseCommand}"
+              HorizontalOptions="Fill"/>
+		</StackLayout>
+	</ScrollView>
+</ContentPage>

@@ -7,12 +7,19 @@
 						Orientation="Horizontal"
 						HorizontalOptions="CenterAndExpand"
 						VerticalOptions="Start"
+            x:Name="root"
 						>
 
 	<StackLayout Orientation="Horizontal">
 		<StackLayout x:Name="photoLayout" Orientation="Horizontal">
 		</StackLayout>
-		<Button FontSize="48" WidthRequest="100" VerticalOptions="FillAndExpand" Text="+"/>
+		<Button 
+      FontSize="48" 
+      WidthRequest="100" 
+      VerticalOptions="FillAndExpand" 
+      BindingContext="{x:Reference root}"
+      Command="{Binding OpenCameraCommand}"
+      Text="+"/>
 	</StackLayout>
 
 </ScrollView>

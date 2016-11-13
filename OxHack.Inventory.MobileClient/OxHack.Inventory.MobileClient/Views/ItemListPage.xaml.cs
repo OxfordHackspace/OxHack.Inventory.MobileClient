@@ -8,15 +8,17 @@ using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient.Views
 {
-    public partial class ItemListPage : ContentPage
-    {
-        public ItemListPage(ItemListViewModel viewModel)
-        {
-            this.InitializeComponent();
+	public partial class ItemListPage : ContentPage
+	{
+		public ItemListPage(ItemListViewModel viewModel)
+		{
+			this.InitializeComponent();
 
-            this.BindingContext = viewModel;
+			this.BindingContext = viewModel;
 
 			this.itemList.ItemTapped += (s, e) => viewModel.NavigateToSelectedItem();
+
+			this.Appearing += (s, e) => viewModel.LoadItems();
 		}
 	}
 }

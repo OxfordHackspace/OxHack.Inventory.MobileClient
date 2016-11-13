@@ -1,6 +1,7 @@
 ﻿using OxHack.Inventory.ApiClient;
 using OxHack.Inventory.ApiClient.Models;
 using OxHack.Inventory.MobileClient.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -11,38 +12,43 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 	public class ItemListViewModel : PageViewModelBase
 	{
 		private readonly InventoryClient inventoryClient;
+		private Func<InventoryClient, Task<IEnumerable<Item>>> itemGetter;
 
-		public ItemListViewModel(INavigation navigation, InventoryClient inventoryClient, string title, Task<IEnumerable<Item>> itemsGetterTask)
+		public ItemListViewModel(INavigation navigation, InventoryClient inventoryClient, string title, Func<InventoryClient, Task<IEnumerable<Item>>> itemGetter)
 			: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
 			this.Title = title;
 
-			itemsGetterTask.ContinueWith(items =>
-			{
-				if (items.Exception == null)
-				{
-					this.Items = new ObservableCollection<Item>(items.Result);
-					base.OnPropertyChanged(nameof(this.Items));
-				}
-			});
-
 			this.Items = new ObservableCollection<Item>();
+
+			this.itemGetter = itemGetter;
 		}
 
-		public async Task NavigateToSelectedItem()
+		public async Task LoadItems()
 		{
-			var target = await this.inventoryClient.GetItemByIdAsync(this.SelectedItem.Id);
-			if (target != null)
+			try
 			{
-				var viewModel =
-					new ItemDetailsViewModel(
-						this.Navigation,
-						this.inventoryClient,
-						target);
+				var items = await this.itemGetter(this.inventoryClient);
 
-				await this.Navigation.PushAsync(new ItemDetailsPage(viewModel));
+				this.Items = new ObservableCollection<Item>(items);
+				base.OnPropertyChanged(nameof(this.Items));
 			}
+			catch
+			{
+				// TODO: log error
+			}
+		}
+
+		public void NavigateToSelectedItem()
+		{
+			var viewModel =
+				new ItemDetailsViewModel(
+					this.Navigation,
+					this.inventoryClient,
+					this.SelectedItem.Id);
+
+			var forget = this.Navigation.PushAsync(new ItemDetailsPage(viewModel));
 		}
 
 		public ObservableCollection<Item> Items

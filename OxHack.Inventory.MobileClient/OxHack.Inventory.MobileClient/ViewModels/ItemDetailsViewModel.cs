@@ -21,13 +21,13 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		private int version;
 		private List<EditFieldViewModelBase> fields;
 
-		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Item model, bool isEditing = false)
+		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Guid modelId, bool isEditing = false)
 		: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
 
 			this.InitialiseEditFields();
-			this.LoadModel(model);
+			var forget = this.LoadModel(modelId);
 
 			this.IsEditing = isEditing;
 		}
@@ -83,27 +83,44 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			}
 		}
 
-		private void LoadModel(Item model)
+		private async Task<bool> LoadModel(Guid modelId, bool onlyIfUpdated = false)
 		{
-			this.id = model.Id;
-			this.concurrencyId = model.ConcurrencyId;
-			this.version = model.Version;
+			bool wasLoaded = false;
 
-			this.Name.Value = model.Name;
-			this.Manufacturer.Value = model.Manufacturer;
-			this.Model.Value = model.Model;
-			this.Quantity.Value = model.Quantity;
-			this.Category.Value = model.Category;
-			this.Spec.Value = model.Spec;
-			this.Appearance.Value = model.Appearance;
-			this.CurrentLocation.Value = model.CurrentLocation;
-			this.AssignedLocation.Value = model.AssignedLocation;
-			this.IsLoan.Value = model.IsLoan;
-			this.Origin.Value = model.Origin;
-			this.AdditionalInformation.Value = model.AdditionalInformation;
+			var model = await this.inventoryClient.GetItemByIdAsync(modelId);
 
-			this.Photos = model.Photos.ToList();
-			this.OnPropertyChanged(nameof(this.Photos));
+			Func<bool> proceed = 
+				() =>
+					onlyIfUpdated
+						? this.version < model.Version
+						: true;
+
+			if (model != null && proceed())
+			{
+				this.id = model.Id;
+				this.concurrencyId = model.ConcurrencyId;
+				this.version = model.Version;
+
+				this.Name.Value = model.Name;
+				this.Manufacturer.Value = model.Manufacturer;
+				this.Model.Value = model.Model;
+				this.Quantity.Value = model.Quantity;
+				this.Category.Value = model.Category;
+				this.Spec.Value = model.Spec;
+				this.Appearance.Value = model.Appearance;
+				this.CurrentLocation.Value = model.CurrentLocation;
+				this.AssignedLocation.Value = model.AssignedLocation;
+				this.IsLoan.Value = model.IsLoan;
+				this.Origin.Value = model.Origin;
+				this.AdditionalInformation.Value = model.AdditionalInformation;
+
+				this.Photos = model.Photos.ToList();
+				this.OnPropertyChanged(nameof(this.Photos));
+
+				wasLoaded = true;
+			}
+
+			return wasLoaded;
 		}
 
 		private Item CopyToModel()
@@ -130,49 +147,50 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		}
 
 		private async Task SaveItemChangeAsync()
-        {
-            // Eventually, when OData is implemented, send over just the Delta using PATCH.
-            // For now we send over the whole entity.
-            await this.inventoryClient.SaveItemAsync(this.CopyToModel());
-            await this.ReloadAfterSave();
-        }
-
-        private async Task SavePhotoAdditionAsync(Uri added)
-        {
-            await this.inventoryClient.AddPhotos(this.id, this.concurrencyId, added);
+		{
+			// Eventually, when OData is implemented, send over just the Delta using PATCH.
+			// For now we send over the whole entity.
+			await this.inventoryClient.SaveItemAsync(this.CopyToModel());
 			await this.ReloadAfterSave();
-        }
+		}
 
-        private async Task SavePhotoRemovalAsync(Uri removed)
-        {
-            await this.inventoryClient.RemovePhotos(this.id, this.concurrencyId, removed);
-            await this.ReloadAfterSave();
-        }
+		private async Task SavePhotoAdditionAsync(byte[] photoData)
+		{
+			await this.inventoryClient.AddPhoto(this.id, this.concurrencyId, photoData);
+			await this.ReloadAfterSave();
+		}
 
-        private async Task ReloadAfterSave()
-        {
-            // TODO: Start an animation here.
-            var tryCount = 3;
-            for (int i = 1; i <= tryCount; i++)
-            {
-                await Task.Delay(500 * i);
-                var update = await this.inventoryClient.GetItemByIdAsync(this.id);
+		private async Task SavePhotoRemovalAsync(Uri removed)
+		{
+            var removedPhoto = removed.Segments.Last();
 
-                if (update.Version > this.version)
-                {
-                    this.LoadModel(update);
-                    break;
-                }
-                if (i == tryCount)
-                {
-                    // TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
-                    await this.Navigation.PopAsync();
-                }
-            }
-            // TODO: End the animation here.
-        }
+			await this.inventoryClient.RemovePhoto(this.id, this.concurrencyId, removedPhoto);
+			await this.ReloadAfterSave();
+		}
 
-        public string Title
+		private async Task ReloadAfterSave()
+		{
+			// TODO: Start an animation here.
+			var tryCount = 3;
+			for (int i = 1; i <= tryCount; i++)
+			{
+				await Task.Delay(500 * i);
+
+				if (await this.LoadModel(this.id, onlyIfUpdated: true))
+				{
+					break;
+				}
+
+				if (i == tryCount)
+				{
+					// TODO: Show popup saying something to the effect of "Could not retrieve updated version of Item."
+					await this.Navigation.PopAsync();
+				}
+			}
+			// TODO: End the animation here.
+		}
+
+		public string Title
 		{
 			get
 			{
@@ -264,11 +282,11 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		{
 			get; set;
 		}
-		
-		public DelegateCommand<Uri> AddPhotoCommand
-			=> new DelegateCommand<Uri>(async photo => await this.SavePhotoAdditionAsync(photo));
+
+		public DelegateCommand<byte[]> AddPhotoCommand
+			=> new DelegateCommand<byte[]>(async photoData => await this.SavePhotoAdditionAsync(photoData));
 
 		public DelegateCommand<Uri> RemovePhotoCommand
 			=> new DelegateCommand<Uri>(async photo => await this.SavePhotoRemovalAsync(photo));
-    }
+	}
 }

@@ -120,6 +120,7 @@
     <AndroidAsset Include="..\OxHack.Inventory.MobileClient\Assets\Fonts\IMFeENrm28P.ttf">
       <Link>Assets\IMFeENrm28P.ttf</Link>
     </AndroidAsset>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

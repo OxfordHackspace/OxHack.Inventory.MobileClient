@@ -70,11 +70,11 @@ namespace OxHack.Inventory.MobileClient.Controls
 			}
 		}
 
-		public DelegateCommand<Uri> AddCommand
+		public DelegateCommand<byte[]> AddCommand
 		{
 			get
 			{
-				return (DelegateCommand<Uri>)this.GetValue(PhotoListControl.AddCommandProperty);
+				return (DelegateCommand<byte[]>)this.GetValue(PhotoListControl.AddCommandProperty);
 			}
 			set
 			{
@@ -83,7 +83,7 @@ namespace OxHack.Inventory.MobileClient.Controls
 		}
 
 		public static readonly BindableProperty AddCommandProperty =
-			BindableProperty.Create(nameof(AddCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
+			BindableProperty.Create(nameof(AddCommand), typeof(DelegateCommand<byte[]>), typeof(PhotoListControl), null);
 
 		public DelegateCommand<Uri> RemoveCommand
 		{
@@ -99,5 +99,13 @@ namespace OxHack.Inventory.MobileClient.Controls
 
 		public static readonly BindableProperty RemoveCommandProperty =
 			BindableProperty.Create(nameof(RemoveCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
+
+		public DelegateCommand OpenCameraCommand
+			=> new DelegateCommand(
+				() => this.Navigation.PushModalAsync(
+					new PhotoCapturePage((photoData) =>
+					{
+						this.AddCommand?.Execute(photoData);
+					})));
 	}
 }

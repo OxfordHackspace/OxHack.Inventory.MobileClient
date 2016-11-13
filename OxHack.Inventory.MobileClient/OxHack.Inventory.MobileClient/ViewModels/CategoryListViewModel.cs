@@ -43,7 +43,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 						this.Navigation,
 						this.inventoryClient,
 						$"{target} Category",
-						this.inventoryClient.GetItemsInCategoryAsync(target));
+						(inventoryClient) => inventoryClient.GetItemsInCategoryAsync(target));
 
 				this.Navigation.PushAsync(new ItemListPage(viewModel));
 			}
