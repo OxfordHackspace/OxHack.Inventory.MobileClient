@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using System.ComponentModel;
 using Prism.Commands;
 
-namespace OxHack.Inventory.MobileClient.Views
+namespace OxHack.Inventory.MobileClient.Controls
 {
 	public partial class PhotoActionsPage : ContentPage
 	{

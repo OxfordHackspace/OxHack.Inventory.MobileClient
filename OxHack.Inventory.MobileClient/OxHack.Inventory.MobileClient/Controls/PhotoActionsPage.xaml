@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
 						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
-             x:Class="OxHack.Inventory.MobileClient.Views.PhotoActionsPage"
+             x:Class="OxHack.Inventory.MobileClient.Controls.PhotoActionsPage"
 						 x:Name="root"
 						 >
 	<ScrollView>
