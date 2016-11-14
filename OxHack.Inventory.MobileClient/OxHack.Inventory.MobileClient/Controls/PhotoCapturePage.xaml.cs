@@ -1,4 +1,5 @@
-﻿using Plugin.Media;
+﻿using Acr.UserDialogs;
+using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Prism.Commands;
 using System;
@@ -41,11 +42,13 @@ namespace OxHack.Inventory.MobileClient.Controls
 				return;
 			}
 
-			using (var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-			{
-				Directory = "OxHackInventory",
-				Name = "cameraSnap.jpg"
-			}))
+			using (var file = await CrossMedia.Current.TakePhotoAsync(
+				new StoreCameraMediaOptions()
+				{
+					Directory = "OxHackInventory",
+					PhotoSize = PhotoSize.Small,
+					Name = "cameraSnap.jpg"
+				}))
 			{
 				PocessImageFile(onCapture, file);
 			}
@@ -59,24 +62,26 @@ namespace OxHack.Inventory.MobileClient.Controls
 
 			using (var file = await CrossMedia.Current.PickPhotoAsync())
 			{
-				PocessImageFile(onCapture, file);
+				this.PocessImageFile(onCapture, file);
 			}
 
 			await this.Navigation.PopModalAsync();
 		}
 
-		private static void PocessImageFile(Action<byte[]> onCapture, MediaFile file)
+		private void PocessImageFile(Action<byte[]> onCapture, MediaFile file)
 		{
 			if (file != null)
 			{
+				byte[] photoData;
 				using (var stream = file.GetStream())
 				{
-					var photoData = new byte[stream.Length];
+					photoData = new byte[stream.Length];
 					stream.Position = 0;
 					stream.Read(photoData, 0, (int)stream.Length);
-
-					onCapture(photoData);
 				}
+
+				UserDialogs.Instance.Toast("Uploading photo.  Please wait...");
+				onCapture(photoData);
 			}
 		}
 

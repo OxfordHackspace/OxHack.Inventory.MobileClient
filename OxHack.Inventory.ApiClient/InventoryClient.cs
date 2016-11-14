@@ -129,9 +129,8 @@ namespace OxHack.Inventory.ApiClient
                     var content = new ByteArrayContent(photoData);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                     content.Headers.Add("ConcurrencyId", concurrencyId);
-                    
 
-                    var response = await PostWithTimeoutAsync(resource, content, client);
+					var response = await PostWithLongTimeoutAsync(resource, content, client);
 
                     InventoryClient.ThrowExceptionOnError(response);
                 }
@@ -173,9 +172,9 @@ namespace OxHack.Inventory.ApiClient
             return await client.PutAsync(resource, content, GetCancellationToken());
         }
 
-        private static async Task<HttpResponseMessage> PostWithTimeoutAsync(Uri resource, HttpContent content, HttpClient client)
+        private static async Task<HttpResponseMessage> PostWithLongTimeoutAsync(Uri resource, HttpContent content, HttpClient client)
         {
-            return await client.PostAsync(resource, content, GetCancellationToken());
+            return await client.PostAsync(resource, content, GetLongCancellationToken());
         }
 
         private static async Task<HttpResponseMessage> DeleteWithTimeoutAsync(Uri resource, HttpClient client)
@@ -186,9 +185,12 @@ namespace OxHack.Inventory.ApiClient
         private static CancellationToken GetCancellationToken()
             => new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
 
-        private static void ThrowExceptionOnError(HttpResponseMessage response)
+		private static CancellationToken GetLongCancellationToken()
+			=> new CancellationTokenSource(TimeSpan.FromSeconds(180)).Token;
+
+		private static void ThrowExceptionOnError(HttpResponseMessage response)
         {
-            if (((int)response.StatusCode / 100) != ((int)HttpStatusCode.OK / 100))
+            if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException($"HTTP {response.StatusCode}. {response.ToString()}");
             }

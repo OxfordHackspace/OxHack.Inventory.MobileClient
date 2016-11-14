@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Plugin.Permissions;
+using Acr.UserDialogs;
 
 namespace OxHack.Inventory.MobileClient.Droid
 {
@@ -17,8 +19,16 @@ namespace OxHack.Inventory.MobileClient.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
+
+			UserDialogs.Init(this);
+
+			LoadApplication(new App());
         }
-    }
+
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+		{
+			PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
 }
 
