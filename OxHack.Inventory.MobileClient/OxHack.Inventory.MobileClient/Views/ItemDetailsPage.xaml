@@ -21,8 +21,8 @@
 
 			<controls:PhotoListControl HeightRequest="200" 
                                  Photos="{Binding Photos}"
-                                 AddCommand="{Binding AddPhotoCommand}"
-                                 RemoveCommand="{Binding RemovePhotoCommand}"
+                                 PhotoAddedCommand="{Binding AddPhotoCommand}"
+                                 PhotoRemovedCommand="{Binding RemovePhotoCommand}"
                                  />
 
 			<Label Text="Name"/>

@@ -18,6 +18,7 @@ namespace OxHack.Inventory.ApiClient
         {
             this.CategoriesResource = new Uri(apiUri, "categories/");
             this.ItemsResource = new Uri(apiUri, "items/");
+            this.PhotosResource = new Uri(apiUri, "photos/");
         }
 
         public async Task<IReadOnlyCollection<string>> GetAllCategoriesAsync()
@@ -44,7 +45,7 @@ namespace OxHack.Inventory.ApiClient
             return result;
         }
 
-        public async Task<IEnumerable<Item>> GetItemsInCategoryAsync(string category)
+		public async Task<IEnumerable<Item>> GetItemsInCategoryAsync(string category)
         {
             List<Item> result = null;
             try
@@ -96,7 +97,29 @@ namespace OxHack.Inventory.ApiClient
             return result;
         }
 
-        public async Task SaveItemAsync(Item update)
+		public async Task CreateItemAsync(Item model)
+		{
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					var resource = new Uri(this.ItemsResource, $"{ model.Id }");
+
+					var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+					content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("domain-model", "CreateItemCommand"));
+
+					var response = await InventoryClient.PutWithTimeoutAsync(resource, content, client);
+
+					InventoryClient.ThrowExceptionOnError(response);
+				}
+			}
+			catch (TaskCanceledException e)
+			{
+				InventoryClient.ThrowTimeoutException(e);
+			}
+		}
+
+		public async Task SaveItemAsync(Item update)
         {
             try
             {
@@ -118,7 +141,37 @@ namespace OxHack.Inventory.ApiClient
             }
         }
 
-        public async Task AddPhoto(Guid itemId, string concurrencyId, byte[] photoData)
+        public async Task<Uri> UploadPhoto(byte[] photoData)
+        {
+            Uri result = null;
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var resource = this.PhotosResource;
+
+                    var content = new ByteArrayContent(photoData);
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+                    var response = await PostWithLongTimeoutAsync(resource, content, client);
+
+                    InventoryClient.ThrowExceptionOnError(response);
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var uri = JsonConvert.DeserializeObject<String>(responseContent);
+                    result = new Uri(uri);
+                }
+            }
+            catch (TaskCanceledException e)
+            {
+                InventoryClient.ThrowTimeoutException(e);
+            }
+
+            return result;
+        }
+
+        public async Task AddPhotoToItem(Guid itemId, string concurrencyId, byte[] photoData)
         {
             try
             {
@@ -141,7 +194,7 @@ namespace OxHack.Inventory.ApiClient
             }
         }
 
-        public async Task RemovePhoto(Guid itemId, string concurrencyId, string removed)
+        public async Task RemovePhotoFromItem(Guid itemId, string concurrencyId, string removed)
         {
             try
             {
@@ -183,7 +236,7 @@ namespace OxHack.Inventory.ApiClient
         }
 
         private static CancellationToken GetCancellationToken()
-            => new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
+            => new CancellationTokenSource(TimeSpan.FromSeconds(305)).Token;
 
 		private static CancellationToken GetLongCancellationToken()
 			=> new CancellationTokenSource(TimeSpan.FromSeconds(180)).Token;

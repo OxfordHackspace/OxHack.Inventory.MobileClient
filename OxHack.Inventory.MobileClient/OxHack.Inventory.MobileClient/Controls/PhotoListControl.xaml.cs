@@ -1,10 +1,6 @@
-﻿using OxHack.Inventory.MobileClient.Views;
-using Prism.Commands;
+﻿using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
 using Xamarin.Forms;
 
 namespace OxHack.Inventory.MobileClient.Controls
@@ -35,7 +31,7 @@ namespace OxHack.Inventory.MobileClient.Controls
 							new PhotoActionsPage(photo, () =>
 								{
 									this.Photos.Remove(photo);
-									this.RemoveCommand?.Execute(photo);
+									this.PhotoRemovedCommand?.Execute(photo);
 									this.PrepareImages(this.Photos);
 								})))
 					});
@@ -57,7 +53,8 @@ namespace OxHack.Inventory.MobileClient.Controls
 		}
 
 		public static readonly BindableProperty PhotosProperty =
-			BindableProperty.Create(nameof(Photos), typeof(List<Uri>), typeof(PhotoListControl), new List<Uri>(), propertyChanged: OnPhotosChanged);
+			BindableProperty.Create(nameof(Photos), typeof(List<Uri>), typeof(PhotoListControl), new List<Uri>(),
+				propertyChanged: OnPhotosChanged);
 
 		private static void OnPhotosChanged(BindableObject bindable, object oldValue, object newValue)
 		{
@@ -70,42 +67,42 @@ namespace OxHack.Inventory.MobileClient.Controls
 			}
 		}
 
-		public DelegateCommand<byte[]> AddCommand
+		public DelegateCommand<byte[]> PhotoAddedCommand
 		{
 			get
 			{
-				return (DelegateCommand<byte[]>)this.GetValue(PhotoListControl.AddCommandProperty);
+				return (DelegateCommand<byte[]>)this.GetValue(PhotoListControl.PhotoAddedCommandProperty);
 			}
 			set
 			{
-				this.SetValue(PhotoListControl.AddCommandProperty, value);
+				this.SetValue(PhotoListControl.PhotoAddedCommandProperty, value);
 			}
 		}
 
-		public static readonly BindableProperty AddCommandProperty =
-			BindableProperty.Create(nameof(AddCommand), typeof(DelegateCommand<byte[]>), typeof(PhotoListControl), null);
+		public static readonly BindableProperty PhotoAddedCommandProperty =
+			BindableProperty.Create(nameof(PhotoAddedCommand), typeof(DelegateCommand<byte[]>), typeof(PhotoListControl), null);
 
-		public DelegateCommand<Uri> RemoveCommand
+		public DelegateCommand<Uri> PhotoRemovedCommand
 		{
 			get
 			{
-				return (DelegateCommand<Uri>)this.GetValue(PhotoListControl.RemoveCommandProperty);
+				return (DelegateCommand<Uri>)this.GetValue(PhotoListControl.PhotoRemovedCommandProperty);
 			}
 			set
 			{
-				this.SetValue(PhotoListControl.RemoveCommandProperty, value);
+				this.SetValue(PhotoListControl.PhotoRemovedCommandProperty, value);
 			}
 		}
 
-		public static readonly BindableProperty RemoveCommandProperty =
-			BindableProperty.Create(nameof(RemoveCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
+		public static readonly BindableProperty PhotoRemovedCommandProperty =
+			BindableProperty.Create(nameof(PhotoRemovedCommand), typeof(DelegateCommand<Uri>), typeof(PhotoListControl), null);
 
 		public DelegateCommand OpenCameraCommand
 			=> new DelegateCommand(
 				() => this.Navigation.PushModalAsync(
-					new PhotoCapturePage((photoData) =>
+					new PhotoCapturePage(photoData =>
 					{
-						this.AddCommand?.Execute(photoData);
+						this.PhotoAddedCommand?.Execute(photoData);
 					})));
 	}
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.ComponentModel;
+using Acr.UserDialogs;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
@@ -89,7 +90,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 			var model = await this.inventoryClient.GetItemByIdAsync(modelId);
 
-			Func<bool> proceed = 
+			Func<bool> proceed =
 				() =>
 					onlyIfUpdated
 						? this.version < model.Version
@@ -156,15 +157,16 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		private async Task SavePhotoAdditionAsync(byte[] photoData)
 		{
-			await this.inventoryClient.AddPhoto(this.id, this.concurrencyId, photoData);
+			UserDialogs.Instance.Toast("Uploading photo.  Please wait...");
+			await this.inventoryClient.AddPhotoToItem(this.id, this.concurrencyId, photoData);
 			await this.ReloadAfterSave();
 		}
 
 		private async Task SavePhotoRemovalAsync(Uri removed)
 		{
-            var removedPhoto = removed.Segments.Last();
+			var removedPhoto = removed.Segments.Last();
 
-			await this.inventoryClient.RemovePhoto(this.id, this.concurrencyId, removedPhoto);
+			await this.inventoryClient.RemovePhotoFromItem(this.id, this.concurrencyId, removedPhoto);
 			await this.ReloadAfterSave();
 		}
 
@@ -287,6 +289,6 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			=> new DelegateCommand<byte[]>(async photoData => await this.SavePhotoAdditionAsync(photoData));
 
 		public DelegateCommand<Uri> RemovePhotoCommand
-			=> new DelegateCommand<Uri>(async photo => await this.SavePhotoRemovalAsync(photo));
+			=> new DelegateCommand<Uri>(async photoUri => await this.SavePhotoRemovalAsync(photoUri));
 	}
 }

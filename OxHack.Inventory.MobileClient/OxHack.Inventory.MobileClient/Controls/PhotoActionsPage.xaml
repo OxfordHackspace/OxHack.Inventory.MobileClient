@@ -9,6 +9,7 @@
 	<ScrollView>
 		<StackLayout Orientation="Vertical">
 			<Image Source="{Binding Photo}"
+						 Margin="6"
              HorizontalOptions="CenterAndExpand"/>
 
 			<Button Text="Open in browser..." 

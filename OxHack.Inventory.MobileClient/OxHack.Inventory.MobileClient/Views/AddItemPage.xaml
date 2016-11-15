@@ -16,45 +16,74 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<ScrollView>
-		<StackLayout Orientation="Vertical">
-			<controls:PhotoListControl Photos="{Binding Photos}"/>
+	<StackLayout Orientation="Vertical">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="2*"/>
+			</Grid.ColumnDefinitions>
 
-			<Label Text="Name"/>
-			<Entry Text="{Binding Name}" />
+			<Button
+				Grid.Row="0" Grid.Column="0"
+				Text="🔙 Go back"
+				Command="{Binding CancelCommand}"
+			/>
 
-			<Label Text="Manufacturer"/>
-			<Entry Text="{Binding Manufacturer}"/>
+			<Button
+				Grid.Row="0" Grid.Column="2"
+				Text="💾 Save"
+				Command="{Binding SaveCommand}"
+			/>
 
-			<Label Text="Model"/>
-			<Entry Text="{Binding Model}"/>
+		</Grid>
+		<ScrollView>
+			<StackLayout Orientation="Vertical">
+				<controls:PhotoListControl HeightRequest="200"
+																	 Photos="{Binding Photos}"
+																	 PhotoAddedCommand="{Binding AddPhotoCommand}"
+																	 PhotoRemovedCommand="{Binding RemovePhotoCommand}"
+																	 />
 
-			<Label Text="Quantity"/>
-			<Entry Text="{Binding Quantity}" Keyboard="Numeric" />
+				<Label Text="Name"/>
+				<Entry Text="{Binding Name}" />
 
-			<Label Text="Appearance"/>
-			<Entry Text="{Binding Appearance}"/>
+				<Label Text="Manufacturer"/>
+				<Entry Text="{Binding Manufacturer}"/>
 
-			<Label Text="Category"/>
-			<Entry Text="{Binding Category}"/>
+				<Label Text="Model"/>
+				<Entry Text="{Binding Model}"/>
 
-			<Label Text="Spec"/>
-			<Entry Text="{Binding Spec}"/>
+				<Label Text="Quantity"/>
+				<Entry Text="{Binding Quantity}" Keyboard="Numeric" />
 
-			<Label Text="Assigned Location"/>
-			<Entry Text="{Binding AssignedLocation}"/>
+				<Label Text="Appearance"/>
+				<Entry Text="{Binding Appearance}"/>
 
-			<Label Text="Current Location"/>
-			<Entry Text="{Binding CurrentLocation}"/>
+				<Label Text="Category"/>
+				<Entry Text="{Binding Category}"/>
 
-			<Label Text="Is Loan?"/>
-			<Switch HorizontalOptions="Start" IsToggled="{Binding IsLoan}" />
+				<Label Text="Spec"/>
+				<Entry Text="{Binding Spec}"/>
 
-			<Label Text="Origin"/>
-			<Entry Text="{Binding Origin}"/>
+				<Label Text="Assigned Location"/>
+				<Entry Text="{Binding AssignedLocation}"/>
 
-			<Label Text="Additional Information"/>
-			<Entry Text="{Binding AdditionalInformation}"/>
-		</StackLayout>
-	</ScrollView>
+				<Label Text="Current Location"/>
+				<Entry Text="{Binding CurrentLocation}"/>
+
+				<Label Text="Is Loan?"/>
+				<Switch HorizontalOptions="Start" IsToggled="{Binding IsLoan}" />
+
+				<Label Text="Origin"/>
+				<Entry Text="{Binding Origin}"/>
+
+				<Label Text="Additional Information"/>
+				<Entry Text="{Binding AdditionalInformation}"/>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
 </ContentPage>
