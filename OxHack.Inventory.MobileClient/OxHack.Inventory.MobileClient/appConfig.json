@@ -1,5 +1,5 @@
 ﻿{
-  //"apiUri": "http://hudson-hawk:5000/api/v1/"
+  "apiUri": "http://hudson-hawk:5000/api/v1/"
   //"apiUri": "http://192.168.2.55:5000/api/v1/"
-  "apiUri": "http://192.168.2.122:5000/api/v1/"
+  //"apiUri": "http://192.168.2.122:5000/api/v1/"
 }
