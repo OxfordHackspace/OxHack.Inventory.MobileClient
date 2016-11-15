@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.HockeyApp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,9 @@ namespace OxHack.Inventory.MobileClient.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-        }
+
+			HockeyClient.Current.Configure("1ed51a09600b4ccc9ff486399ad3fc2e");
+		}
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

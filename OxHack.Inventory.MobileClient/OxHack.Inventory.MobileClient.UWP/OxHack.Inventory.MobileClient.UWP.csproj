@@ -19,7 +19,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>OxHack.Inventory.MobileClient.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <HockeyAppResourceId>1ed51a09600b4ccc9ff486399ad3fc2e</HockeyAppResourceId>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>4F08591F1C239AF8FEF8441F37EF0AF7615F04B1</PackageCertificateThumbprint>

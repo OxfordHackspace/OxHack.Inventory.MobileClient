@@ -34,3 +34,5 @@ using Android.App;
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
 [assembly: UsesFeature("android.hardware.camera", Required = false)]
 [assembly: UsesFeature("android.hardware.camera.autofocus", Required = false)]
+
+[assembly: MetaData("net.hockeyapp.android.appIdentifier", Value = "b6aa4420685f47108a77c783bbf52af3")]
