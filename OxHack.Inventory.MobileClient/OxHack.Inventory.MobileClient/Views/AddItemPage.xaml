@@ -4,7 +4,7 @@
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
 						 xmlns:controls="clr-namespace:OxHack.Inventory.MobileClient.Controls"
              x:Class="OxHack.Inventory.MobileClient.Views.AddItemPage"
-						 Title="{Binding Title}"
+						 Title="Add new Item"
 						 x:Name="root"
 						 >
 	<ContentPage.Resources>

@@ -1,4 +1,5 @@
 ﻿using OxHack.Inventory.ApiClient;
+using OxHack.Inventory.MobileClient.Services;
 using OxHack.Inventory.MobileClient.Views;
 using Prism.Commands;
 using System.Threading.Tasks;
@@ -11,13 +12,13 @@ namespace OxHack.Inventory.MobileClient.ViewModels
         private readonly CategoryListViewModel categoriesViewModel;
         private readonly AddItemPage addItemPage;
 
-        public MainMenuViewModel(INavigation navigation, InventoryClient inventoryClient)
+        public MainMenuViewModel(INavigation navigation, InventoryClient inventoryClient, MessageService messageService)
 		: base(navigation)
 		{
-			this.categoriesViewModel = new CategoryListViewModel(navigation, inventoryClient);
+			this.categoriesViewModel = new CategoryListViewModel(navigation, inventoryClient, messageService);
 			this.BrowseByCategoryCommand = new DelegateCommand(() => this.Navigation.PushAsync(new CategoryListPage(this.categoriesViewModel)));
 
-            this.addItemPage = new AddItemPage(new AddItemViewModel(navigation, inventoryClient));
+            this.addItemPage = new AddItemPage(new AddItemViewModel(navigation, inventoryClient, messageService));
 			this.AddItemCommand = new DelegateCommand(() => this.Navigation.PushModalAsync(this.addItemPage));
 		}
 

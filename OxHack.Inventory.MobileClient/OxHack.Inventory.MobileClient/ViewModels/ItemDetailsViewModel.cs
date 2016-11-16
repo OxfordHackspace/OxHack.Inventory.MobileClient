@@ -9,28 +9,28 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.ComponentModel;
 using Acr.UserDialogs;
+using OxHack.Inventory.MobileClient.Services;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
 	public class ItemDetailsViewModel : PageViewModelBase
 	{
 		private readonly InventoryClient inventoryClient;
-		private bool isEditing;
+		private readonly MessageService messageService;
 
 		private Guid id;
 		private string concurrencyId;
 		private int version;
 		private List<EditFieldViewModelBase> fields;
 
-		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, Guid modelId, bool isEditing = false)
+		public ItemDetailsViewModel(INavigation navigation, InventoryClient inventoryClient, MessageService messageService, Guid modelId)
 		: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
+			this.messageService = messageService;
 
 			this.InitialiseEditFields();
 			var forget = this.LoadModel(modelId);
-
-			this.IsEditing = isEditing;
 		}
 
 		private void InitialiseEditFields()
@@ -157,7 +157,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		private async Task SavePhotoAdditionAsync(byte[] photoData)
 		{
-			UserDialogs.Instance.Toast("Uploading photo.  Please wait...");
+			this.messageService.ShowToast("Uploading photo.  Please wait...");
 			await this.inventoryClient.AddPhotoToItem(this.id, this.concurrencyId, photoData);
 			await this.ReloadAfterSave();
 		}
@@ -191,34 +191,6 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			}
 			// TODO: End the animation here.
 		}
-
-		public string Title
-		{
-			get
-			{
-				return
-					this.IsEditing
-						? "Editing Item Details"
-						: "Item Details";
-			}
-		}
-
-		public bool IsEditing
-		{
-			get
-			{
-				return this.isEditing;
-			}
-			set
-			{
-				base.SetProperty(ref this.isEditing, value);
-				base.OnPropertyChanged(nameof(this.IsNotEditing));
-			}
-		}
-
-		public bool IsNotEditing
-			=> !this.IsEditing;
-
 
 		public EditFieldViewModel<string> Name
 		{

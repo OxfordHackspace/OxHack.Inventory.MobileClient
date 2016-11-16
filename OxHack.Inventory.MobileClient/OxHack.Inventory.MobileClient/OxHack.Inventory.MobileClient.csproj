@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="Helpers\ForPlatform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MessageService.cs" />
     <Compile Include="ViewModels\AddItemViewModel.cs" />
     <Compile Include="ViewModels\EditFieldViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />

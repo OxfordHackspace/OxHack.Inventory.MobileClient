@@ -19,7 +19,12 @@ namespace OxHack.Inventory.MobileClient
             var splash = new SplashPage();
             this.MainPage = new NavigationPage(splash);
 
-            var mainMenuViewModel = new MainMenuViewModel(this.MainPage.Navigation, new InventoryClient(AppConfig.CreateFromConfigFile().ApiUri));
+            var mainMenuViewModel = 
+				new MainMenuViewModel(
+					this.MainPage.Navigation, 
+					new InventoryClient(AppConfig.CreateFromConfigFile().ApiUri),
+					new Services.MessageService());
+
             var mainMenuPage = new MainMenuPage(mainMenuViewModel);
 
             this.initializeViewModels = async () => await mainMenuViewModel.InitializeAsync();

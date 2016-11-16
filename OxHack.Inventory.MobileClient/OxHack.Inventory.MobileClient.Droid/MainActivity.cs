@@ -1,15 +1,11 @@
-﻿using System;
-
+﻿
+using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Plugin.Permissions;
-using Acr.UserDialogs;
 using HockeyApp.Android;
 using HockeyApp.Android.Metrics;
+using Plugin.Permissions;
 
 namespace OxHack.Inventory.MobileClient.Droid
 {

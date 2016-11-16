@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using OxHack.Inventory.MobileClient.Services;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
@@ -13,11 +14,13 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 	{
 		private readonly InventoryClient inventoryClient;
 		private Func<InventoryClient, Task<IEnumerable<Item>>> itemGetter;
+		private readonly MessageService messageService;
 
-		public ItemListViewModel(INavigation navigation, InventoryClient inventoryClient, string title, Func<InventoryClient, Task<IEnumerable<Item>>> itemGetter)
+		public ItemListViewModel(INavigation navigation, InventoryClient inventoryClient, MessageService messageService, string title, Func<InventoryClient, Task<IEnumerable<Item>>> itemGetter)
 			: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
+			this.messageService = messageService;
 			this.Title = title;
 
 			this.Items = new ObservableCollection<Item>();
@@ -46,6 +49,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 				new ItemDetailsViewModel(
 					this.Navigation,
 					this.inventoryClient,
+					this.messageService,
 					this.SelectedItem.Id);
 
 			var forget = this.Navigation.PushAsync(new ItemDetailsPage(viewModel));

@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using OxHack.Inventory.ApiClient;
 using OxHack.Inventory.ApiClient.Models;
+using OxHack.Inventory.MobileClient.Services;
 using OxHack.Inventory.MobileClient.Views;
 using Prism.Commands;
 using System;
@@ -14,11 +15,13 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 	public class AddItemViewModel : PageViewModelBase
 	{
 		private readonly InventoryClient inventoryClient;
+		private readonly MessageService messageService;
 
-		public AddItemViewModel(INavigation navigation, InventoryClient inventoryClient)
+		public AddItemViewModel(INavigation navigation, InventoryClient inventoryClient, MessageService messageService)
 			: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
+			this.messageService = messageService;
 
 			this.Reset();
 		}
@@ -104,7 +107,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 				}
 				catch
 				{
-					UserDialogs.Instance.ShowError("Item creation failed :|.  Sorry!");
+					this.messageService.ShowError("Item creation failed :|.  Sorry!");
 				}
 			}
 
@@ -112,7 +115,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			{
 				this.Reset();
 				await this.Navigation.PopModalAsync();
-				await this.Navigation.PushAsync(new ItemDetailsPage(new ItemDetailsViewModel(this.Navigation, this.inventoryClient, model.Id)));
+				await this.Navigation.PushAsync(new ItemDetailsPage(new ItemDetailsViewModel(this.Navigation, this.inventoryClient, this.messageService, model.Id)));
 			}
 		}
 
@@ -144,7 +147,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			if (invalidFields.Any())
 			{
 				isValid = false;
-				UserDialogs.Instance.ShowError("Please fill in the following fields: " + String.Join(", ", invalidFields));
+				this.messageService.ShowError("Please fill in the following fields: " + String.Join(", ", invalidFields));
 			}
 			else
 			{

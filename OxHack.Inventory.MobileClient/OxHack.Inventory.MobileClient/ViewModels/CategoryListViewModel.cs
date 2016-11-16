@@ -4,17 +4,20 @@ using Prism.Commands;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using OxHack.Inventory.MobileClient.Services;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
 	public class CategoryListViewModel : PageViewModelBase
 	{
 		private InventoryClient inventoryClient;
+		private readonly MessageService messageService;
 
-		public CategoryListViewModel(INavigation navigation, InventoryClient inventoryClient)
+		public CategoryListViewModel(INavigation navigation, InventoryClient inventoryClient, MessageService messageService)
 			: base(navigation)
 		{
 			this.inventoryClient = inventoryClient;
+			this.messageService = messageService;
 
 			this.Categories = new ObservableCollection<string>();
 
@@ -42,6 +45,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 					new ItemListViewModel(
 						this.Navigation,
 						this.inventoryClient,
+						this.messageService,
 						$"{target} Category",
 						(inventoryClient) => inventoryClient.GetItemsInCategoryAsync(target));
 
