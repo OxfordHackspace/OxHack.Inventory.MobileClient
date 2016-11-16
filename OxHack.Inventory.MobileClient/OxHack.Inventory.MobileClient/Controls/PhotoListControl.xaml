@@ -11,7 +11,10 @@
 						>
 
 	<StackLayout Orientation="Horizontal">
-		<StackLayout x:Name="photoLayout" Orientation="Horizontal">
+		<StackLayout 
+			x:Name="photoLayout" 
+			Orientation="Horizontal"
+			Spacing="5">
 		</StackLayout>
 		<Button 
       FontSize="48" 

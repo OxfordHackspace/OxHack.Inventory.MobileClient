@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using OxHack.Inventory.MobileClient.Services;
+using Prism.Commands;
 
 namespace OxHack.Inventory.MobileClient.ViewModels
 {
@@ -26,6 +27,8 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.Items = new ObservableCollection<Item>();
 
 			this.itemGetter = itemGetter;
+
+			this.RefreshCommand = new DelegateCommand(async () => await this.LoadItems());
 		}
 
 		public async Task LoadItems()
@@ -68,6 +71,11 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 		}
 
 		public string Title
+		{
+			get;
+		}
+
+		public DelegateCommand RefreshCommand
 		{
 			get;
 		}

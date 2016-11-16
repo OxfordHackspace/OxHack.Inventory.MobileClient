@@ -4,7 +4,10 @@
 						 xmlns:helpers="clr-namespace:OxHack.Inventory.MobileClient.Helpers"
              x:Class="OxHack.Inventory.MobileClient.Views.ItemListPage"
 						 Title="{Binding Title}">
-
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Order="Primary" Name="Refresh" Command="{Binding RefreshCommand}" />
+	</ContentPage.ToolbarItems>
+	
 	<ListView
 		x:Name="itemList"
 		ItemsSource="{Binding Items}"

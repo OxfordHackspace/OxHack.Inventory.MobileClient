@@ -64,10 +64,10 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			get;
 			set;
 		}
+
 		public DelegateCommand RefreshCommand
 		{
 			get;
-			private set;
 		}
 	}
 }

@@ -18,9 +18,14 @@ namespace OxHack.Inventory.MobileClient.Controls
 
 			foreach (var photo in photos)
 			{
-				var image = new Image()
+				var image = new Frame()
 				{
-					Source = photo,
+					Content = new Image()
+					{
+						Source = photo,
+					},
+					BackgroundColor = Color.Accent.MultiplyAlpha(1d / 8),
+					Padding = new Thickness(10)
 				};
 
 				image.GestureRecognizers.Add(

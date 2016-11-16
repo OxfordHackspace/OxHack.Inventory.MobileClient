@@ -157,7 +157,7 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 
 		private async Task SavePhotoAdditionAsync(byte[] photoData)
 		{
-			this.messageService.ShowToast("Uploading photo.  Please wait...");
+			//this.messageService.ShowToast("Uploading photo.  Please wait...");
 			await this.inventoryClient.AddPhotoToItem(this.id, this.concurrencyId, photoData);
 			await this.ReloadAfterSave();
 		}

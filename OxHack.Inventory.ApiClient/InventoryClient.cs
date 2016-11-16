@@ -14,11 +14,19 @@ namespace OxHack.Inventory.ApiClient
     [Obsolete("TODO: Extract interface.")]
     public class InventoryClient
     {
-        public InventoryClient(Uri apiUri)
+		private readonly string applicationName;
+		private readonly string applicationVersion;
+		private readonly string clientId;
+
+		public InventoryClient(Uri apiUri, string applicationName, string applicationVersion, string clientId)
         {
             this.CategoriesResource = new Uri(apiUri, "categories/");
             this.ItemsResource = new Uri(apiUri, "items/");
             this.PhotosResource = new Uri(apiUri, "photos/");
+
+			this.applicationName = applicationName;
+			this.applicationVersion = applicationVersion;
+			this.clientId = clientId;
         }
 
         public async Task<IReadOnlyCollection<string>> GetAllCategoriesAsync()
@@ -26,7 +34,7 @@ namespace OxHack.Inventory.ApiClient
             List<string> result = null;
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var response = await InventoryClient.GetWithTimeoutAsync(this.CategoriesResource, client);
 
@@ -50,7 +58,7 @@ namespace OxHack.Inventory.ApiClient
             List<Item> result = null;
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var resource = new Uri(this.ItemsResource, $"?category={ WebUtility.UrlEncode(category) }");
 
@@ -76,7 +84,7 @@ namespace OxHack.Inventory.ApiClient
             Item result = null;
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var resource = new Uri(this.ItemsResource, $"{ id }");
 
@@ -101,7 +109,7 @@ namespace OxHack.Inventory.ApiClient
 		{
 			try
 			{
-				using (var client = new HttpClient())
+				using (var client = this.GetHttpClient())
 				{
 					var resource = new Uri(this.ItemsResource, $"{ model.Id }");
 
@@ -123,7 +131,7 @@ namespace OxHack.Inventory.ApiClient
         {
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var resource = new Uri(this.ItemsResource, $"{ update.Id }");
 
@@ -147,7 +155,7 @@ namespace OxHack.Inventory.ApiClient
 
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var resource = this.PhotosResource;
 
@@ -175,7 +183,7 @@ namespace OxHack.Inventory.ApiClient
         {
             try
             {
-                using (var client = new HttpClient())
+                using (var client = this.GetHttpClient())
                 {
                     var resource = new Uri(this.ItemsResource, $"{ itemId }/photos");
 
@@ -197,25 +205,35 @@ namespace OxHack.Inventory.ApiClient
         public async Task RemovePhotoFromItem(Guid itemId, string concurrencyId, string removed)
         {
             try
-            {
-                using (var client = new HttpClient())
-                {
-                    var resource = new Uri(this.ItemsResource, $"{ itemId }/photos/{ removed }");
+			{
+				using (var client = this.GetHttpClient())
+				{
+					var resource = new Uri(this.ItemsResource, $"{ itemId }/photos/{ removed }");
 
-                    client.DefaultRequestHeaders.Add("ConcurrencyId", concurrencyId);
+					client.DefaultRequestHeaders.Add("ConcurrencyId", concurrencyId);
 
-                    var response = await DeleteWithTimeoutAsync(resource, client);
+					var response = await DeleteWithTimeoutAsync(resource, client);
 
-                    InventoryClient.ThrowExceptionOnError(response);
-                }
-            }
-            catch (TaskCanceledException e)
+					InventoryClient.ThrowExceptionOnError(response);
+				}
+			}
+			catch (TaskCanceledException e)
             {
                 InventoryClient.ThrowTimeoutException(e);
             }
         }
 
-        private static async Task<HttpResponseMessage> GetWithTimeoutAsync(Uri resource, HttpClient client)
+		private HttpClient GetHttpClient()
+		{
+			var client = new HttpClient();
+			client.DefaultRequestHeaders.Add("Inventory-Client-Name", this.applicationName);
+			client.DefaultRequestHeaders.Add("Inventory-Client-Version", this.applicationVersion);
+			client.DefaultRequestHeaders.Add("Inventory-Client-UniqueId", this.clientId);
+
+			return client;
+		}
+
+		private static async Task<HttpResponseMessage> GetWithTimeoutAsync(Uri resource, HttpClient client)
         {
             return await client.GetAsync(resource, GetCancellationToken());
         }
@@ -236,7 +254,7 @@ namespace OxHack.Inventory.ApiClient
         }
 
         private static CancellationToken GetCancellationToken()
-            => new CancellationTokenSource(TimeSpan.FromSeconds(305)).Token;
+            => new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token;
 
 		private static CancellationToken GetLongCancellationToken()
 			=> new CancellationTokenSource(TimeSpan.FromSeconds(180)).Token;

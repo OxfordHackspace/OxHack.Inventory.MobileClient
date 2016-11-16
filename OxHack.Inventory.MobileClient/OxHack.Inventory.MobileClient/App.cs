@@ -1,8 +1,10 @@
-﻿using OxHack.Inventory.ApiClient;
+﻿using Acr.DeviceInfo;
+using OxHack.Inventory.ApiClient;
 using OxHack.Inventory.MobileClient.ViewModels;
 using OxHack.Inventory.MobileClient.Views;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -14,15 +16,21 @@ namespace OxHack.Inventory.MobileClient
         private readonly Func<Task> navigateToMainMenu;
         private readonly Func<Task> initializeViewModels;
 
-        public App()
+        public App(Assembly clientAssembly)
         {
             var splash = new SplashPage();
             this.MainPage = new NavigationPage(splash);
 
-            var mainMenuViewModel = 
+			var clientId = DeviceInfo.Hardware.DeviceId;
+
+			var mainMenuViewModel = 
 				new MainMenuViewModel(
 					this.MainPage.Navigation, 
-					new InventoryClient(AppConfig.CreateFromConfigFile().ApiUri),
+					new InventoryClient(
+						AppConfig.CreateFromConfigFile().ApiUri,
+						clientAssembly.GetName().Name, 
+						this.GetType().GetTypeInfo().Assembly.GetName().Version.ToString(),
+						clientId),
 					new Services.MessageService());
 
             var mainMenuPage = new MainMenuPage(mainMenuViewModel);

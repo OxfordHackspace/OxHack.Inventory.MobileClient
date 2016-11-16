@@ -23,7 +23,7 @@ namespace OxHack.Inventory.MobileClient.Droid
 
 			UserDialogs.Init(this);
 
-			LoadApplication(new App());
+			LoadApplication(new App(this.GetType().Assembly));
 
 			this.CheckForUpdates();
 		}

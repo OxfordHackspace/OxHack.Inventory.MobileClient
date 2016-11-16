@@ -195,6 +195,20 @@ namespace OxHack.Inventory.MobileClient.ViewModels
 			this.Quantity = 1;
 			this.Spec = String.Empty;
 			this.Photos = new List<Uri>();
+
+			this.OnPropertyChanged(nameof(this.AdditionalInformation));
+			this.OnPropertyChanged(nameof(this.Appearance));
+			this.OnPropertyChanged(nameof(this.AssignedLocation));
+			this.OnPropertyChanged(nameof(this.Category));
+			this.OnPropertyChanged(nameof(this.CurrentLocation));
+			this.OnPropertyChanged(nameof(this.IsLoan));
+			this.OnPropertyChanged(nameof(this.Manufacturer));
+			this.OnPropertyChanged(nameof(this.Model));
+			this.OnPropertyChanged(nameof(this.Name));
+			this.OnPropertyChanged(nameof(this.Origin));
+			this.OnPropertyChanged(nameof(this.Quantity));
+			this.OnPropertyChanged(nameof(this.Spec));
+			this.OnPropertyChanged(nameof(this.Photos));
 		}
 
 		public DelegateCommand CancelCommand
